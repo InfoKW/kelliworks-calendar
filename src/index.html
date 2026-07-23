@@ -1094,15 +1094,15 @@ let currentRole = 'kelli';
 const METRICOOL_CONFIG = {
   userId:   '4769078',             // Metricool account userId
   timezone: 'America/New_York',    // adjust if needed
-  // KelliWorks brand
-  kw:  { blogId: '6199467', networks: ['instagram', 'facebook'] },
-  kwa: { blogId: '6199467', networks: ['instagram', 'facebook', 'linkedin'] },
+  // KelliWorks brand — connected: Instagram, LinkedIn, Google Business Profile
+  kw:  { blogId: '6199467', networks: ['instagram'] },
+  kwa: { blogId: '6199467', networks: ['instagram', 'linkedin'] },
   kwt: { blogId: '6199467', networks: ['instagram'] },
   kl:  { blogId: '6199467', networks: ['linkedin'] },
   gw:  { blogId: '6199467', networks: ['instagram'] },
   web: { blogId: '6199467', networks: ['gbp'] },
-  // Entrepreneurs Anonymous brand
-  ea:  { blogId: '6184180', networks: ['instagram', 'facebook', 'youtube'] },
+  // Entrepreneurs Anonymous brand — update networks[] to match what's connected in Metricool
+  ea:  { blogId: '6184180', networks: ['instagram'] },
 };
 let _weekPosts = [];
 let _platformNotes = {};
