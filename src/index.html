@@ -586,6 +586,22 @@
     }
     .charity-delete-btn:hover { border-color: #e53e3e; background: #fff5f5; color: #e53e3e; }
 
+    /* ── Metricool schedule button ── */
+    .metricool-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      height: 32px; padding: 0 12px;
+      border: 1.5px solid #4f46e5; border-radius: 6px;
+      background: #fff; color: #4f46e5;
+      font-size: 11.5px; font-weight: 600; font-family: var(--font-body);
+      cursor: pointer; white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .metricool-btn:hover:not(:disabled) { background: #4f46e5; color: #fff; }
+    .metricool-btn.metricool-done {
+      border-color: #16a34a; color: #16a34a; background: #f0fdf4; cursor: default;
+    }
+    .metricool-btn:disabled:not(.metricool-done) { opacity: 0.5; cursor: not-allowed; }
+
     /* ── Charity: add-post zone at bottom of day ── */
     .add-post-zone {
       border: 1.5px dashed var(--gold);
@@ -1064,7 +1080,30 @@ const LS_PREFIX = 'kw-approval-';
 const approvalCache = {};
 const postEditsCache = {};
 const customPostsCache = {};
+const metricoolCache = {};
 let currentRole = 'kelli';
+
+// ── Metricool Integration Config ─────────────────────────────────────────────
+// HOW TO GET YOUR IDs:
+//   1. Add METRICOOL_API_KEY to Vercel environment variables (your REST API key).
+//   2. Find your userId: call GET /api/metricool?action=brands&userId=YOUR_USER_ID
+//      (You can get your userId from Metricool → Account Settings → API page.)
+//   3. Each brand in the response has a blogId — copy it to the correct platform below.
+//   4. Supported network strings: instagram | facebook | linkedin | youtube |
+//      twitter | tiktok | gbp | pinterest | threads | bluesky
+const METRICOOL_CONFIG = {
+  userId:   '4769078',             // Metricool account userId
+  timezone: 'America/New_York',    // adjust if needed
+  // KelliWorks brand
+  kw:  { blogId: '6199467', networks: ['instagram', 'facebook'] },
+  kwa: { blogId: '6199467', networks: ['instagram', 'facebook', 'linkedin'] },
+  kwt: { blogId: '6199467', networks: ['instagram'] },
+  kl:  { blogId: '6199467', networks: ['linkedin'] },
+  gw:  { blogId: '6199467', networks: ['instagram'] },
+  web: { blogId: '6199467', networks: ['gbp'] },
+  // Entrepreneurs Anonymous brand
+  ea:  { blogId: '6184180', networks: ['instagram', 'facebook', 'youtube'] },
+};
 let _weekPosts = [];
 let _platformNotes = {};
 
@@ -1470,9 +1509,20 @@ function buildCard(post) {
 
   let actionHtml;
   if (currentRole === 'charity') {
+    const isApproved  = status === 'approved';
+    const isScheduled = !!metricoolCache[post.id]?.scheduled;
+    const hasMcConfig = isApproved && !!METRICOOL_CONFIG[post.platform]?.blogId;
+    const mcBtn = hasMcConfig
+      ? '<button class="metricool-btn' + (isScheduled ? ' metricool-done' : '') + '"'
+        + ' onclick="scheduleInMetricool(\'' + esc(post.id) + '\')"'
+        + (isScheduled ? ' disabled' : '') + '>'
+        + (isScheduled ? '&#10003; Scheduled' : '&#128197; Schedule')
+        + '</button>'
+      : '';
     actionHtml = '<div class="charity-card-actions">'
       + '<button class="charity-edit-btn" onclick="openEditModal(\'' + esc(post.id) + '\')">&#9998; Edit Post</button>'
       + '<button class="charity-delete-btn" onclick="deletePost(\'' + esc(post.id) + '\')" title="Delete post">&#128465;</button>'
+      + mcBtn
       + '</div>';
   } else {
     actionHtml = '<div class="approve-row">'
@@ -2002,6 +2052,97 @@ async function publishForReview(platform) {
   }
 }
 
+// ── Metricool: combine ISO date + "8:00 AM" → "2026-04-28T08:00:00" ──────────
+function postToISODateTime(dateStr, timeStr) {
+  if (!dateStr) return null;
+  let h = 0, m = 0;
+  if (timeStr) {
+    const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (match) {
+      h = parseInt(match[1]); m = parseInt(match[2]);
+      if (match[3].toUpperCase() === 'PM' && h !== 12) h += 12;
+      if (match[3].toUpperCase() === 'AM' && h === 12) h = 0;
+    }
+  }
+  return `${dateStr}T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00`;
+}
+
+async function scheduleInMetricool(postId) {
+  const btn = document.querySelector(`[data-post-id="${CSS.escape(postId)}"] .metricool-btn`);
+  if (!btn || btn.disabled) return;
+
+  // Resolve post (base + any edits)
+  const basePost = _weekPosts.find(p => p.id === postId)
+    || Object.values(customPostsCache).find(p => p.id === postId);
+  if (!basePost) { alert('Post not found.'); return; }
+  const edit = postEditsCache[postId];
+  const post = edit ? { ...basePost, ...edit, id: postId, platform: basePost.platform } : basePost;
+
+  const cfg = METRICOOL_CONFIG[post.platform];
+  if (!cfg?.blogId) { alert(`No Metricool blogId configured for platform: ${post.platform}`); return; }
+  if (!METRICOOL_CONFIG.userId) { alert('METRICOOL_CONFIG.userId is not set in index.html'); return; }
+
+  const dt = postToISODateTime(post.date, post.post_time);
+  if (!dt) { alert('Post has no date — cannot schedule in Metricool.'); return; }
+
+  // Collect HTTP media URLs (data: URIs cannot be passed to Metricool)
+  const mediaKey = `${post.platform}|${post.date}|${post.post_time}`;
+  const mediaUrls = [];
+  if (post.image_url?.startsWith('http')) mediaUrls.push(post.image_url);
+  (MEDIA_MANIFEST[mediaKey] || []).forEach(m => { if (m.type === 'image') mediaUrls.push(m.path); });
+  if (Array.isArray(post.mediaDataUrls)) {
+    post.mediaDataUrls.forEach(m => { if (m.url?.startsWith('http')) mediaUrls.push(m.url); });
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Scheduling\u2026';
+
+  try {
+    const res = await fetch('/api/metricool?action=schedule', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId:          METRICOOL_CONFIG.userId,
+        blogId:          cfg.blogId,
+        text:            post.caption || '',
+        networks:        cfg.networks,
+        publicationDate: dt,
+        timezone:        METRICOOL_CONFIG.timezone || 'America/New_York',
+        mediaUrls,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || JSON.stringify(data));
+
+    // Persist scheduled state to Firebase
+    await setDoc(doc(db, 'metricool_scheduled', postId), {
+      postId,
+      platform:    post.platform,
+      scheduledAt: dt,
+      metricoolId: data.id || data.postId || null,
+      createdAt:   new Date().toISOString(),
+    });
+    metricoolCache[postId] = { scheduled: true };
+    btn.textContent = '\u2713 Scheduled';
+    btn.classList.add('metricool-done');
+  } catch (e) {
+    console.error('[Metricool]', e);
+    alert('Could not schedule: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = '\uD83D\uDCC5 Schedule';
+  }
+}
+
+function startMetricoolListener() {
+  onSnapshot(collection(db, 'metricool_scheduled'), snapshot => {
+    snapshot.docChanges().forEach(change => {
+      if (change.type === 'removed') { delete metricoolCache[change.doc.id]; return; }
+      metricoolCache[change.doc.id] = { scheduled: true, ...change.doc.data() };
+    });
+    renderPosts(_weekPosts, _platformNotes);
+  }, err => console.warn('metricool_scheduled listener error:', err));
+}
+
 function startPostEditsListener() {
   onSnapshot(collection(db, 'post_edits'), snapshot => {
     snapshot.docChanges().forEach(change => {
@@ -2060,9 +2201,11 @@ window.deletePost       = deletePost;
 window.onModalFileChange      = onModalFileChange;
 window.onCarouselFilesChange  = onCarouselFilesChange;
 window.removeCarouselThumb    = removeCarouselThumb;
-window.publishForReview = publishForReview;
+window.publishForReview     = publishForReview;
+window.scheduleInMetricool  = scheduleInMetricool;
 
 startApprovalListener();
+startMetricoolListener();
 </script>
 </body>
 </html>
