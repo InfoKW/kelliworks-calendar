@@ -2092,6 +2092,12 @@ async function scheduleInMetricool(postId) {
   const dt = postToISODateTime(post.date, post.post_time);
   if (!dt) { alert('Post has no date — cannot schedule in Metricool.'); return; }
 
+  // Debug — remove after confirming media fields
+  console.log('[MC debug] post.mediaDataUrl:', post.mediaDataUrl);
+  console.log('[MC debug] post.mediaDataUrls:', post.mediaDataUrls);
+  console.log('[MC debug] post.image_url:', post.image_url);
+  console.log('[MC debug] getMedia(post):', getMedia(post));
+
   // Collect HTTP media URLs (data: URIs cannot be passed to Metricool)
   const mediaUrls = [];
 
