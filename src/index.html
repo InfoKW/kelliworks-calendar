@@ -1591,6 +1591,12 @@ function startApprovalListener() {
       approvalCache[postId] = data;
       updateCardUI(postId, data);
     });
+    // Charity view: full re-render so the Metricool Schedule button
+    // appears on newly-approved posts (updateCardUI only patches the
+    // select/note and won't inject new buttons into the DOM).
+    if (currentRole === 'charity' && _weekPosts.length) {
+      renderPosts(_weekPosts, _platformNotes);
+    }
   }, (err) => { console.warn('Firestore listener error:', err); });
 }
 
