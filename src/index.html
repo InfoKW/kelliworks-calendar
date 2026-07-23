@@ -1513,11 +1513,12 @@ function buildCard(post) {
     const isScheduled = !!metricoolCache[post.id]?.scheduled;
     const hasMcConfig = isApproved && !!METRICOOL_CONFIG[post.platform]?.blogId;
     const mcBtn = hasMcConfig
-      ? '<button class="metricool-btn' + (isScheduled ? ' metricool-done' : '') + '"'
-        + ' onclick="scheduleInMetricool(\'' + esc(post.id) + '\')"'
-        + (isScheduled ? ' disabled' : '') + '>'
-        + (isScheduled ? '&#10003; Scheduled' : '&#128197; Schedule')
-        + '</button>'
+      ? isScheduled
+        ? '<button class="metricool-btn metricool-done"'
+          + ' onclick="resetMetricoolSchedule(\'' + esc(post.id) + '\')"'
+          + ' title="Click to reset and reschedule">&#10003; Scheduled</button>'
+        : '<button class="metricool-btn"'
+          + ' onclick="scheduleInMetricool(\'' + esc(post.id) + '\')">&#128197; Schedule</button>'
       : '';
     actionHtml = '<div class="charity-card-actions">'
       + '<button class="charity-edit-btn" onclick="openEditModal(\'' + esc(post.id) + '\')">&#9998; Edit Post</button>'
@@ -2156,6 +2157,17 @@ async function scheduleInMetricool(postId) {
   }
 }
 
+async function resetMetricoolSchedule(postId) {
+  if (!confirm('Reset scheduled status so this post can be rescheduled?')) return;
+  try {
+    await deleteDoc(doc(db, 'metricool_scheduled', postId));
+    delete metricoolCache[postId];
+    renderPosts(_weekPosts, _platformNotes);
+  } catch(e) {
+    alert('Reset failed: ' + e.message);
+  }
+}
+
 function startMetricoolListener() {
   onSnapshot(collection(db, 'metricool_scheduled'), snapshot => {
     snapshot.docChanges().forEach(change => {
@@ -2225,7 +2237,8 @@ window.onModalFileChange      = onModalFileChange;
 window.onCarouselFilesChange  = onCarouselFilesChange;
 window.removeCarouselThumb    = removeCarouselThumb;
 window.publishForReview     = publishForReview;
-window.scheduleInMetricool  = scheduleInMetricool;
+window.scheduleInMetricool    = scheduleInMetricool;
+window.resetMetricoolSchedule = resetMetricoolSchedule;
 
 startApprovalListener();
 startMetricoolListener();
