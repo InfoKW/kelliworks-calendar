@@ -43,35 +43,12 @@ export default async function handler(req, res) {
       if (!networks?.length) return res.status(400).json({ error: 'networks array required' });
       if (!publicationDate) return res.status(400).json({ error: 'publicationDate required' });
 
-      // Normalize image URLs through Metricool's CDN before attaching to post.
-      // Only Cloudinary/external HTTP URLs can be normalized — skip data: URIs.
+      // Pass image URLs directly — normalization is optional for Cloudinary URLs.
       console.log('[metricool] mediaUrls received:', JSON.stringify(mediaUrls));
-      let normalizedMedia = [];
-      if (mediaUrls && mediaUrls.length > 0) {
-        const httpUrls = mediaUrls.filter(u => u.startsWith('http'));
-        console.log('[metricool] httpUrls to normalize:', JSON.stringify(httpUrls));
-        const normalized = await Promise.all(
-          httpUrls.map(async url => {
-            try {
-              const normalizeUrl =
-                `https://app.metricool.com/api/actions/normalize/image/url` +
-                `?url=${encodeURIComponent(url)}&userId=${userId}`;
-              const nr = await fetch(normalizeUrl, { headers: mcHeaders });
-              const nText = await nr.text();
-              console.log('[metricool] normalize status:', nr.status, 'body:', nText);
-              if (!nr.ok) return { url }; // fall back to original on error
-              let nd;
-              try { nd = JSON.parse(nText); } catch { return { url }; }
-              return nd.url ? { url: nd.url } : { url };
-            } catch (e) {
-              console.warn('[metricool] normalize failed:', e.message);
-              return { url }; // fall back to original
-            }
-          })
-        );
-        normalizedMedia = normalized.filter(Boolean);
-        console.log('[metricool] normalizedMedia:', JSON.stringify(normalizedMedia));
-      }
+      const normalizedMedia = (mediaUrls || [])
+        .filter(u => typeof u === 'string' && u.startsWith('http'))
+        .map(u => ({ url: u }));
+      console.log('[metricool] media to attach:', JSON.stringify(normalizedMedia));
 
       const payload = {
         publicationDate: {
