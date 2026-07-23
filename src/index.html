@@ -2127,17 +2127,19 @@ async function scheduleInMetricool(postId) {
       data.error + (data.metricoolResponse ? '\n\nFull response: ' + JSON.stringify(data.metricoolResponse) : '')
     );
 
-    // Persist scheduled state to Firebase
-    await setDoc(doc(db, 'metricool_scheduled', postId), {
+    // Mark as scheduled locally immediately
+    metricoolCache[postId] = { scheduled: true };
+    btn.textContent = '\u2713 Scheduled';
+    btn.classList.add('metricool-done');
+
+    // Persist to Firebase (best-effort — won't block success if rules not yet updated)
+    setDoc(doc(db, 'metricool_scheduled', postId), {
       postId,
       platform:    post.platform,
       scheduledAt: dt,
       metricoolId: data.id || data.postId || null,
       createdAt:   new Date().toISOString(),
-    });
-    metricoolCache[postId] = { scheduled: true };
-    btn.textContent = '\u2713 Scheduled';
-    btn.classList.add('metricool-done');
+    }).catch(e => console.warn('[Metricool] Firebase persist failed (update Firestore rules):', e.message));
   } catch (e) {
     console.error('[Metricool]', e);
     alert('Could not schedule: ' + e.message);
