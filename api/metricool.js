@@ -79,13 +79,27 @@ export default async function handler(req, res) {
         ...(normalizedMedia.length > 0 ? { media: normalizedMedia } : {}),
       };
 
+      console.log('[metricool] POST /scheduler/posts payload:', JSON.stringify(payload));
+
       const r = await fetch(
         `${BASE}/scheduler/posts?userId=${userId}&blogId=${blogId}`,
         { method: 'POST', headers: mcHeaders, body: JSON.stringify(payload) }
       );
 
-      const data = await r.json();
-      return res.status(r.ok ? 200 : r.status).json(data);
+      const rawText = await r.text();
+      console.log('[metricool] response status:', r.status, 'body:', rawText);
+
+      let data;
+      try { data = JSON.parse(rawText); } catch { data = { raw: rawText }; }
+
+      if (!r.ok) {
+        return res.status(r.status).json({
+          error: data?.error || data?.message || rawText,
+          metricoolStatus: r.status,
+          metricoolResponse: data,
+        });
+      }
+      return res.status(200).json(data);
     }
 
     return res.status(400).json({ error: `Unknown action: ${action}` });

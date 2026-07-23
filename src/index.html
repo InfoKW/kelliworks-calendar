@@ -2123,7 +2123,9 @@ async function scheduleInMetricool(postId) {
       }),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || JSON.stringify(data));
+    if (!res.ok) throw new Error(
+      data.error + (data.metricoolResponse ? '\n\nFull response: ' + JSON.stringify(data.metricoolResponse) : '')
+    );
 
     // Persist scheduled state to Firebase
     await setDoc(doc(db, 'metricool_scheduled', postId), {
