@@ -2103,10 +2103,13 @@ async function scheduleInMetricool(postId) {
     post.mediaDataUrls.forEach(u => { if (typeof u === 'string' && u.startsWith('http')) mediaUrls.push(u); });
   }
 
-  // Fall back to MEDIA_MANIFEST (hardcoded Cloudinary URLs for the base week.md)
+  // Fall back to MEDIA_MANIFEST using getMedia() — same logic as buildCarousel,
+  // including its fallback to the base post's original date when dates are edited.
   if (!mediaUrls.length) {
-    const mediaKey = `${post.platform}|${post.date}|${post.post_time}`;
-    (MEDIA_MANIFEST[mediaKey] || []).forEach(m => { if (m.type === 'image') mediaUrls.push(m.path); });
+    getMedia(post).forEach(m => {
+      const url = mediaUrl(m.path);
+      if (url.startsWith('http')) mediaUrls.push(url);
+    });
   }
 
   if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
