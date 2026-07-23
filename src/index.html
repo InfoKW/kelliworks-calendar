@@ -2092,12 +2092,20 @@ async function scheduleInMetricool(postId) {
   if (!dt) { alert('Post has no date — cannot schedule in Metricool.'); return; }
 
   // Collect HTTP media URLs (data: URIs cannot be passed to Metricool)
-  const mediaKey = `${post.platform}|${post.date}|${post.post_time}`;
   const mediaUrls = [];
-  if (post.image_url?.startsWith('http')) mediaUrls.push(post.image_url);
-  (MEDIA_MANIFEST[mediaKey] || []).forEach(m => { if (m.type === 'image') mediaUrls.push(m.path); });
+
+  // Single uploaded image (non-carousel)
+  if (post.mediaDataUrl?.startsWith('http')) mediaUrls.push(post.mediaDataUrl);
+
+  // Carousel — stored as plain URL strings, not objects
   if (Array.isArray(post.mediaDataUrls)) {
-    post.mediaDataUrls.forEach(m => { if (m.url?.startsWith('http')) mediaUrls.push(m.url); });
+    post.mediaDataUrls.forEach(u => { if (typeof u === 'string' && u.startsWith('http')) mediaUrls.push(u); });
+  }
+
+  // Fall back to MEDIA_MANIFEST (hardcoded Cloudinary URLs for the base week.md)
+  if (!mediaUrls.length) {
+    const mediaKey = `${post.platform}|${post.date}|${post.post_time}`;
+    (MEDIA_MANIFEST[mediaKey] || []).forEach(m => { if (m.type === 'image') mediaUrls.push(m.path); });
   }
 
   if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
