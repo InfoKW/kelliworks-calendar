@@ -2092,12 +2092,6 @@ async function scheduleInMetricool(postId) {
   const dt = postToISODateTime(post.date, post.post_time);
   if (!dt) { alert('Post has no date — cannot schedule in Metricool.'); return; }
 
-  // Debug — remove after confirming media fields
-  console.log('[MC debug] post.mediaDataUrl:', post.mediaDataUrl);
-  console.log('[MC debug] post.mediaDataUrls:', post.mediaDataUrls);
-  console.log('[MC debug] post.image_url:', post.image_url);
-  console.log('[MC debug] getMedia(post):', getMedia(post));
-
   // Collect HTTP media URLs (data: URIs cannot be passed to Metricool)
   const mediaUrls = [];
 
@@ -2113,13 +2107,10 @@ async function scheduleInMetricool(postId) {
   // including its fallback to the base post's original date when dates are edited.
   if (!mediaUrls.length) {
     getMedia(post).forEach(m => {
-      console.log('[MC debug] manifest item:', JSON.stringify(m));
       const url = mediaUrl(m.path);
-      console.log('[MC debug] resolved url:', url, 'starts with http:', url.startsWith('http'));
       if (url.startsWith('http')) mediaUrls.push(url);
     });
   }
-  console.log('[MC debug] final mediaUrls:', JSON.stringify(mediaUrls));
 
   if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
     alert('Metricool scheduling only works on the live Vercel site — not on localhost.\nDeploy to Vercel first, then test there.');

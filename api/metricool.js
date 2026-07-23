@@ -43,12 +43,10 @@ export default async function handler(req, res) {
       if (!networks?.length) return res.status(400).json({ error: 'networks array required' });
       if (!publicationDate) return res.status(400).json({ error: 'publicationDate required' });
 
-      // Pass image URLs directly — normalization is optional for Cloudinary URLs.
-      console.log('[metricool] mediaUrls received:', JSON.stringify(mediaUrls));
+      // Pass Cloudinary URLs directly — no normalization needed for permanent public URLs.
       const normalizedMedia = (mediaUrls || [])
         .filter(u => typeof u === 'string' && u.startsWith('http'))
         .map(u => ({ url: u }));
-      console.log('[metricool] media to attach:', JSON.stringify(normalizedMedia));
 
       const payload = {
         publicationDate: {
@@ -62,15 +60,12 @@ export default async function handler(req, res) {
         ...(normalizedMedia.length > 0 ? { media: normalizedMedia } : {}),
       };
 
-      console.log('[metricool] POST /scheduler/posts payload:', JSON.stringify(payload));
-
       const r = await fetch(
         `${BASE}/scheduler/posts?userId=${userId}&blogId=${blogId}`,
         { method: 'POST', headers: mcHeaders, body: JSON.stringify(payload) }
       );
 
       const rawText = await r.text();
-      console.log('[metricool] response status:', r.status, 'body:', rawText);
 
       let data;
       try { data = JSON.parse(rawText); } catch { data = { raw: rawText }; }
