@@ -48,20 +48,21 @@ export default async function handler(req, res) {
         .filter(u => typeof u === 'string' && u.startsWith('http'))
         .map(u => {
           const isVideo = /\.(mp4|mov|avi|webm|mkv)(\?|$)/i.test(u) || u.includes('/video/');
-          return { url: u, type: isVideo ? 'VIDEO' : 'IMAGE' };
+          return { url: u, type: isVideo ? 'video' : 'image' };
         });
 
       const payload = {
         publicationDate: {
-          dateTime: publicationDate,                       // "2026-04-28T08:00:00"
+          dateTime: publicationDate,
           timezone:  timezone || 'America/New_York',
         },
         text:        text || '',
-        // providers must be objects {network: '...'}, NOT plain strings
         providers:   networks.map(n => ({ network: n })),
         autoPublish: true,
         ...(normalizedMedia.length > 0 ? { media: normalizedMedia } : {}),
       };
+
+      console.log('[metricool proxy] payload being sent to Metricool:', JSON.stringify(payload, null, 2));
 
       const r = await fetch(
         `${BASE}/scheduler/posts?userId=${userId}&blogId=${blogId}`,
@@ -69,6 +70,7 @@ export default async function handler(req, res) {
       );
 
       const rawText = await r.text();
+      console.log('[metricool proxy] Metricool raw response:', rawText);
 
       let data;
       try { data = JSON.parse(rawText); } catch { data = { raw: rawText }; }
