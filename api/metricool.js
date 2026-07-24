@@ -9,6 +9,17 @@
 
 const BASE = 'https://app.metricool.com/api/v2';
 
+// Insert Cloudinary format+quality transformation into image URLs.
+// Converts to JPEG and auto-optimises quality/size for platform compliance:
+//   - Instagram 8 MB limit, Bluesky 1 MB limit, TikTok no-PNG rule, etc.
+// Videos and non-Cloudinary URLs are returned unchanged.
+function applyCloudinaryTransform(url) {
+  if (!url.includes('res.cloudinary.com')) return url;
+  if (url.includes('/video/'))             return url; // leave videos alone
+  if (/\/upload\/[^/]*f_(?:jpg|jpeg|png|webp)/.test(url)) return url; // already has format
+  return url.replace('/upload/', '/upload/f_jpg,q_auto/');
+}
+
 export default async function handler(req, res) {
   const apiKey = process.env.METRICOOL_API_KEY;
   if (!apiKey) {
@@ -51,12 +62,14 @@ export default async function handler(req, res) {
 
       for (const u of validUrls) {
         try {
+          // Apply JPEG conversion + quality optimisation before normalising.
+          const transformedUrl = applyCloudinaryTransform(u);
           const normalizeEndpoint =
             `https://app.metricool.com/api/actions/normalize/image/url` +
-            `?url=${encodeURIComponent(u)}&userId=${userId}&blogId=${blogId}`;
+            `?url=${encodeURIComponent(transformedUrl)}&userId=${userId}&blogId=${blogId}`;
           const nr = await fetch(normalizeEndpoint, { headers: mcHeaders });
           const normalizeData = await nr.json();
-          console.log('[metricool proxy] normalize response for', u, ':', JSON.stringify(normalizeData));
+          console.log('[metricool proxy] normalize response for', transformedUrl, ':', JSON.stringify(normalizeData));
 
           // Extract mediaId — try common response shapes
           const mediaId = normalizeData?.mediaId
