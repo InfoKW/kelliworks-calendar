@@ -43,12 +43,15 @@ export default async function handler(req, res) {
       if (!networks?.length) return res.status(400).json({ error: 'networks array required' });
       if (!publicationDate) return res.status(400).json({ error: 'publicationDate required' });
 
-      // Pass Cloudinary URLs directly — no normalization needed for permanent public URLs.
+      // Route media URLs through our image proxy so Metricool's fetcher gets a
+      // clean URL — Metricool crashes on %2B and other encoded chars in paths.
+      const host = req.headers['x-forwarded-host'] || req.headers.host || 'calendar.kelliworks.com';
       const normalizedMedia = (mediaUrls || [])
         .filter(u => typeof u === 'string' && u.startsWith('http'))
         .map(u => {
           const isVideo = /\.(mp4|mov|avi|webm|mkv)(\?|$)/i.test(u) || u.includes('/video/');
-          return { url: u, type: isVideo ? 'video' : 'image' };
+          const proxyUrl = `https://${host}/api/image-proxy?url=${encodeURIComponent(u)}`;
+          return { url: proxyUrl, type: isVideo ? 'video' : 'image' };
         });
 
       const payload = {
@@ -56,9 +59,10 @@ export default async function handler(req, res) {
           dateTime: publicationDate,
           timezone:  timezone || 'America/New_York',
         },
-        text:        text || '',
-        providers:   networks.map(n => ({ network: n })),
-        autoPublish: true,
+        text:                   text || '',
+        providers:              networks.map(n => ({ network: n })),
+        autoPublish:            true,
+        saveExternalMediaFiles: normalizedMedia.length > 0,
         ...(normalizedMedia.length > 0 ? { media: normalizedMedia } : {}),
       };
 
