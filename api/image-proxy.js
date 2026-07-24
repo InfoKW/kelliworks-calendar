@@ -8,12 +8,10 @@ export default async function handler(req, res) {
   const rawUrl = req.query.url;
   if (!rawUrl) return res.status(400).json({ error: 'url param required' });
 
-  let imageUrl;
-  try {
-    imageUrl = decodeURIComponent(rawUrl);
-  } catch {
-    return res.status(400).json({ error: 'invalid url param' });
-  }
+  // req.query.url is already URL-decoded once by the HTTP server.
+  // Do NOT call decodeURIComponent again — double-decoding turns %20 into
+  // spaces and %2B into +, producing an invalid URL that fetch() rejects.
+  const imageUrl = rawUrl;
 
   if (!imageUrl.startsWith('https://') && !imageUrl.startsWith('http://')) {
     return res.status(400).json({ error: 'url must be http(s)' });
