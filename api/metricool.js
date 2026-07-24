@@ -57,19 +57,27 @@ export default async function handler(req, res) {
       // Step 1: Normalize each image URL through Metricool's normalize endpoint.
       // This uploads the image to Metricool's servers and returns a mediaId.
       // Endpoint: GET /api/actions/normalize/image/url?url=<encoded-url>
+      //
+      // Metricool's fetcher chokes on %2B / %20 in Cloudinary paths, so we
+      // route the image through our own /api/image-proxy which gives Metricool
+      // a clean, encoding-free URL to fetch. The proxy also applies the
+      // Cloudinary f_jpg,q_auto transform for platform compliance.
+      const host = req.headers['x-forwarded-host'] || req.headers.host || 'calendar.kelliworks.com';
       const validUrls = (mediaUrls || []).filter(u => typeof u === 'string' && u.startsWith('http'));
       const mediaIds = [];
 
       for (const u of validUrls) {
         try {
-          // Apply JPEG conversion + quality optimisation before normalising.
+          // Apply JPEG + quality transform, then wrap in our proxy so
+          // Metricool gets a clean URL with no problematic encoded characters.
           const transformedUrl = applyCloudinaryTransform(u);
+          const proxyUrl = `https://${host}/api/image-proxy?url=${encodeURIComponent(transformedUrl)}`;
           const normalizeEndpoint =
             `https://app.metricool.com/api/actions/normalize/image/url` +
-            `?url=${encodeURIComponent(transformedUrl)}&userId=${userId}&blogId=${blogId}`;
+            `?url=${encodeURIComponent(proxyUrl)}&userId=${userId}&blogId=${blogId}`;
           const nr = await fetch(normalizeEndpoint, { headers: mcHeaders });
           const normalizeData = await nr.json();
-          console.log('[metricool proxy] normalize response for', transformedUrl, ':', JSON.stringify(normalizeData));
+          console.log('[metricool proxy] normalize response for', proxyUrl, ':', JSON.stringify(normalizeData));
 
           // Extract mediaId — try common response shapes
           const mediaId = normalizeData?.mediaId
