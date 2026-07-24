@@ -59,10 +59,9 @@ export default async function handler(req, res) {
           dateTime: publicationDate,
           timezone:  timezone || 'America/New_York',
         },
-        text:                   text || '',
-        providers:              networks.map(n => ({ network: n })),
-        autoPublish:            true,
-        saveExternalMediaFiles: normalizedMedia.length > 0,
+        text:        text || '',
+        providers:   networks.map(n => ({ network: n })),
+        autoPublish: true,
         ...(normalizedMedia.length > 0 ? { media: normalizedMedia } : {}),
       };
 
