@@ -43,16 +43,45 @@ export default async function handler(req, res) {
       if (!networks?.length) return res.status(400).json({ error: 'networks array required' });
       if (!publicationDate) return res.status(400).json({ error: 'publicationDate required' });
 
-      // Route media URLs through our image proxy so Metricool's fetcher gets a
-      // clean URL — Metricool crashes on %2B and other encoded chars in paths.
-      const host = req.headers['x-forwarded-host'] || req.headers.host || 'calendar.kelliworks.com';
-      const normalizedMedia = (mediaUrls || [])
-        .filter(u => typeof u === 'string' && u.startsWith('http'))
-        .map(u => {
-          const isVideo = /\.(mp4|mov|avi|webm|mkv)(\?|$)/i.test(u) || u.includes('/video/');
-          const proxyUrl = `https://${host}/api/image-proxy?url=${encodeURIComponent(u)}`;
-          return { url: proxyUrl, type: isVideo ? 'video' : 'image' };
-        });
+      // Step 1: Normalize each image URL through Metricool's normalize endpoint.
+      // This uploads the image to Metricool's servers and returns a mediaId.
+      // Endpoint: GET /api/actions/normalize/image/url?url=<encoded-url>
+      const validUrls = (mediaUrls || []).filter(u => typeof u === 'string' && u.startsWith('http'));
+      const mediaIds = [];
+
+      for (const u of validUrls) {
+        try {
+          const normalizeEndpoint =
+            `https://app.metricool.com/api/actions/normalize/image/url` +
+            `?url=${encodeURIComponent(u)}&userId=${userId}&blogId=${blogId}`;
+          const nr = await fetch(normalizeEndpoint, { headers: mcHeaders });
+          const normalizeData = await nr.json();
+          console.log('[metricool proxy] normalize response for', u, ':', JSON.stringify(normalizeData));
+
+          // Extract mediaId — try common response shapes
+          const mediaId = normalizeData?.mediaId
+            ?? normalizeData?.data?.mediaId
+            ?? normalizeData?.id
+            ?? normalizeData?.data?.id;
+
+          if (mediaId) {
+            mediaIds.push({ mediaId: String(mediaId) });
+          } else {
+            console.warn('[metricool proxy] normalize returned no mediaId:', JSON.stringify(normalizeData));
+          }
+        } catch (e) {
+          console.error('[metricool proxy] normalize error:', e.message);
+        }
+      }
+
+      // Step 2: Build the media field.
+      // Metricool uses media: { mediaId } for a single image.
+      // For multiple images use an array: media: [{ mediaId }, { mediaId }]
+      const mediaField = mediaIds.length === 1
+        ? mediaIds[0]
+        : mediaIds.length > 1
+          ? mediaIds
+          : null;
 
       const payload = {
         publicationDate: {
@@ -62,7 +91,7 @@ export default async function handler(req, res) {
         text:        text || '',
         providers:   networks.map(n => ({ network: n })),
         autoPublish: true,
-        ...(normalizedMedia.length > 0 ? { media: normalizedMedia } : {}),
+        ...(mediaField ? { media: mediaField } : {}),
       };
 
       console.log('[metricool proxy] payload being sent to Metricool:', JSON.stringify(payload, null, 2));
