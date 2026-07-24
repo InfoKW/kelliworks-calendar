@@ -2117,6 +2117,12 @@ async function scheduleInMetricool(postId) {
     return;
   }
 
+  // DEBUG — open DevTools Console to see these before scheduling
+  console.log('[Metricool DEBUG] post.mediaDataUrl:', post.mediaDataUrl);
+  console.log('[Metricool DEBUG] post.mediaDataUrls:', post.mediaDataUrls);
+  console.log('[Metricool DEBUG] getMedia(post):', getMedia(post));
+  console.log('[Metricool DEBUG] final mediaUrls array being sent:', mediaUrls);
+
   btn.disabled = true;
   btn.textContent = 'Scheduling\u2026';
 
@@ -2135,6 +2141,7 @@ async function scheduleInMetricool(postId) {
       }),
     });
     const data = await res.json();
+    console.log('[Metricool DEBUG] API response:', data);
     if (!res.ok) throw new Error(
       data.error + (data.metricoolResponse ? '\n\nFull response: ' + JSON.stringify(data.metricoolResponse) : '')
     );

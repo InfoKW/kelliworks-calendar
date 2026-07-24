@@ -46,7 +46,10 @@ export default async function handler(req, res) {
       // Pass Cloudinary URLs directly — no normalization needed for permanent public URLs.
       const normalizedMedia = (mediaUrls || [])
         .filter(u => typeof u === 'string' && u.startsWith('http'))
-        .map(u => ({ url: u }));
+        .map(u => {
+          const isVideo = /\.(mp4|mov|avi|webm|mkv)(\?|$)/i.test(u) || u.includes('/video/');
+          return { url: u, type: isVideo ? 'VIDEO' : 'IMAGE' };
+        });
 
       const payload = {
         publicationDate: {
