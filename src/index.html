@@ -2120,8 +2120,10 @@ async function scheduleInMetricool(postId) {
   }
 
   // DEBUG — open DevTools Console to see these before scheduling
+  console.log('[Metricool DEBUG] full post object:', JSON.stringify(post));
   console.log('[Metricool DEBUG] post.mediaDataUrl:', post.mediaDataUrl);
   console.log('[Metricool DEBUG] post.mediaDataUrls:', post.mediaDataUrls);
+  console.log('[Metricool DEBUG] post.image_url:', post.image_url);
   console.log('[Metricool DEBUG] getMedia(post):', getMedia(post));
   console.log('[Metricool DEBUG] final mediaUrls array being sent:', mediaUrls);
 
