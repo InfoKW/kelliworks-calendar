@@ -51,13 +51,18 @@ export default async function handler(req, res) {
       const validUrls = (mediaUrls || []).filter(u => typeof u === 'string' && u.startsWith('http'));
       const mediaIds  = [];
 
+      // Normalize uses GET with no body — only X-Mc-Auth, no Content-Type.
+      // Sending Content-Type: application/json on a GET causes Metricool to
+      // return 500 "No acceptable representation".
+      const mcGetHeaders = { 'X-Mc-Auth': apiKey };
+
       for (const rawUrl of validUrls) {
         try {
           const normalizeEndpoint =
             `https://app.metricool.com/api/actions/normalize/image/url` +
             `?url=${encodeURIComponent(rawUrl)}`;
 
-          const nr   = await fetch(normalizeEndpoint, { headers: mcHeaders });
+          const nr   = await fetch(normalizeEndpoint, { headers: mcGetHeaders });
           const body = await nr.text();
           console.log('[metricool] normalize status:', nr.status, '| body:', body);
 
