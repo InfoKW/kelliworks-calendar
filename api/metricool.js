@@ -66,29 +66,68 @@ export default async function handler(req, res) {
       const validUrls = (mediaUrls || []).filter(u => typeof u === 'string' && u.startsWith('http'));
       const mediaIds = [];
 
+      // Extract mediaId from any Metricool normalize response shape.
+      function extractMediaId(d) {
+        if (!d || typeof d !== 'object') return null;
+        // Walk every value in the object (top-level and one level deep)
+        // looking for a key that contains "id" or "mediaid" (case-insensitive).
+        for (const [k, v] of Object.entries(d)) {
+          if (/mediaid/i.test(k) && v) return String(v);
+        }
+        for (const [k, v] of Object.entries(d)) {
+          if (k === 'id' && v) return String(v);
+        }
+        for (const [k, v] of Object.entries(d)) {
+          if (v && typeof v === 'object') {
+            const nested = extractMediaId(v);
+            if (nested) return nested;
+          }
+        }
+        return null;
+      }
+
+      async function normalizeUrl(urlToNormalize) {
+        const endpoint =
+          `https://app.metricool.com/api/actions/normalize/image/url` +
+          `?url=${encodeURIComponent(urlToNormalize)}&userId=${userId}&blogId=${blogId}`;
+        const nr = await fetch(endpoint, { headers: mcHeaders });
+        const data = await nr.json();
+        console.log('[metricool proxy] normalize attempt for', urlToNormalize, '→', JSON.stringify(data));
+        return { data, mediaId: extractMediaId(data) };
+      }
+
       for (const u of validUrls) {
         try {
-          // Apply JPEG + quality transform, then wrap in our proxy so
-          // Metricool gets a clean URL with no problematic encoded characters.
           const transformedUrl = applyCloudinaryTransform(u);
-          const proxyUrl = `https://${host}/api/image-proxy?url=${encodeURIComponent(transformedUrl)}`;
-          const normalizeEndpoint =
-            `https://app.metricool.com/api/actions/normalize/image/url` +
-            `?url=${encodeURIComponent(proxyUrl)}&userId=${userId}&blogId=${blogId}`;
-          const nr = await fetch(normalizeEndpoint, { headers: mcHeaders });
-          const normalizeData = await nr.json();
-          console.log('[metricool proxy] normalize response for', proxyUrl, ':', JSON.stringify(normalizeData));
 
-          // Extract mediaId — try common response shapes
-          const mediaId = normalizeData?.mediaId
-            ?? normalizeData?.data?.mediaId
-            ?? normalizeData?.id
-            ?? normalizeData?.data?.id;
+          // For uploaded images (no encoding issues), try normalizing directly
+          // with the Cloudinary URL first — this avoids an extra proxy hop.
+          // Only route through our proxy for URLs with problematic encoded chars.
+          const hasEncodingIssues = /%2B|%20|\+/.test(u);
+
+          let mediaId = null;
+
+          if (!hasEncodingIssues) {
+            // Try direct Cloudinary URL first
+            const direct = await normalizeUrl(transformedUrl);
+            mediaId = direct.mediaId;
+            if (!mediaId) {
+              console.warn('[metricool proxy] direct normalize got no mediaId, trying proxy fallback');
+            }
+          }
+
+          // Use proxy if direct failed or URL has encoding issues
+          if (!mediaId) {
+            const proxyUrl = `https://${host}/api/image-proxy?url=${encodeURIComponent(transformedUrl)}`;
+            const proxied = await normalizeUrl(proxyUrl);
+            mediaId = proxied.mediaId;
+            if (!mediaId) {
+              console.warn('[metricool proxy] proxy normalize also got no mediaId. Full response:', JSON.stringify(proxied.data));
+            }
+          }
 
           if (mediaId) {
-            mediaIds.push({ mediaId: String(mediaId) });
-          } else {
-            console.warn('[metricool proxy] normalize returned no mediaId:', JSON.stringify(normalizeData));
+            mediaIds.push({ mediaId });
           }
         } catch (e) {
           console.error('[metricool proxy] normalize error:', e.message);
