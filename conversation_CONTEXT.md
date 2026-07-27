@@ -14,11 +14,11 @@ Hand this file to a fresh Claude session before starting work on the calendar to
 
 ## The brief (verbatim from Charity, paraphrased where long)
 
-She currently builds 7 weekly content calendars in Google Docs — one per platform (KW Accounting IG+FB, KW Accounting LinkedIn, Kelli Lewis, Global Woman, EA, Yelp, GMB). The Doc workflow gets cluttered, Kelli can't review smoothly, and a previous Claude artifact attempt failed because (a) the artifact wouldn't go live for Kelli, and (b) the artifact didn't persist data, so Charity couldn't see what Kelli filled in.
+She currently builds 7 weekly content calendars in Google Docs — one per platform (KW Accounting IG_FB, KW Accounting LinkedIn, Kelli Lewis, Global Woman, EA, Yelp, GMB). The Doc workflow gets cluttered, Kelli can't review smoothly, and a previous Claude artifact attempt failed because (a) the artifact wouldn't go live for Kelli, and (b) the artifact didn't persist data, so Charity couldn't see what Kelli filled in.
 
 ### What the tool must do
 
-1. **Display content by platform** — tabs for KelliWorks IG+FB, KW Accounting, KW Taxes, Entrepreneurs Anonymous (EA), Kelli LinkedIn, Global Woman, Website + GMB + Yelp. Each tab shows that week's posts in daily order.
+1. **Display content by platform** — tabs for KelliWorks IG_FB, KW Accounting, KW Taxes, Entrepreneurs Anonymous (EA), Kelli LinkedIn, Global Woman, Website_GMB_Yelp. Each tab shows that week's posts in daily order.
 2. **Show full post details on each card** — brand + platform, date + time, post format (static, reel, carousel, quote), full caption, visual placeholder or uploaded image, approval status.
 3. **Kelli's approval workflow** — per-post status select (Approved / Needs Edits / Do Not Post), free-text note, **autosaves** so nothing is lost on browser close. Mobile-friendly is non-negotiable — she reviews from her phone.
 4. **Charity's workflow** — upload a new week's content each Monday, add/edit captions and visual placeholders, see Kelli's status + notes in real time, mark posts as scheduled once they're live.

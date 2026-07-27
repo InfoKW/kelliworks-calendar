@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#f5f5f5;color:#222;font-size:13px;}
+header{background:#1a1a2e;color:#fff;padding:16px 20px;}
+header h1{font-size:15px;letter-spacing:1px;}
+header p{font-size:11px;color:#bbb;margin-top:4px;}
+.pnav{display:flex;flex-wrap:wrap;gap:6px;padding:12px 20px;background:#fff;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100;}
+.pnav button{padding:6px 12px;border:1px solid #ccc;border-radius:16px;background:#fff;cursor:pointer;font-size:11px;font-weight:bold;}
+.pnav button.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e;}
+.platform{display:none;padding:16px 20px;}
+.platform.active{display:block;}
+.ph{background:#1a1a2e;color:#fff;padding:10px 14px;border-radius:6px;margin-bottom:16px;}
+.ph h2{font-size:13px;}
+.ph p{font-size:10px;color:#c9a84c;margin-top:3px;}
+.day{margin-bottom:20px;}
+.dlabel{background:#c9a84c;color:#1a1a2e;padding:6px 12px;font-size:11px;font-weight:bold;border-radius:4px 4px 0 0;}
+.card{background:#fff;border:1px solid #e8e8e8;border-top:none;padding:14px;margin-bottom:2px;}
+.card:last-child{border-radius:0 0 6px 6px;}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.b{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;}
+.bt{background:#f0f0f0;color:#666;}
+.btype{background:#e8f4fd;color:#1a6fa8;}
+.bhigh{background:#fdecea;color:#c0392b;}
+.btrend{background:#e8f8e8;color:#27ae60;}
+.caption{font-size:12px;line-height:1.7;color:#333;margin-bottom:10px;padding:10px;background:#fafafa;border-left:3px solid #c9a84c;border-radius:0 4px 4px 0;}
+.vbox{background:#fff8e1;border:1px dashed #c9a84c;border-radius:4px;padding:10px;margin-bottom:10px;font-size:11px;color:#856404;}
+.vbox strong{display:block;margin-bottom:4px;color:#1a1a2e;}
+.arow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.arow label{font-size:11px;color:#888;}
+.arow select{font-size:11px;padding:4px 8px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;}
+.arow select.approved{border-color:#27ae60;color:#27ae60;background:#eafaf1;}
+.arow select.edits{border-color:#c9a84c;color:#856404;background:#fff8e1;}
+.arow select.no{border-color:#e74c3c;color:#922;background:#fdecea;}
+.nin{flex:1;padding:4px 8px;border:1px solid #ddd;border-radius:6px;font-size:11px;font-family:Arial;min-width:150px;}
+.nalert{background:#fdecea;border-left:3px solid #e74c3c;padding:8px 12px;font-size:11px;color:#7b1a1a;margin-bottom:10px;border-radius:0 4px 4px 0;}
+.ninfo{background:#e8f4fd;border-left:3px solid #1a6fa8;padding:8px 12px;font-size:11px;color:#1a3a5c;margin-bottom:10px;border-radius:0 4px 4px 0;}
+</style>
+</head>
+<body>
+<header>
+  <h1>KELLIWORKS — FULL CONTENT CALENDAR | APRIL 27 – MAY 1, 2025</h1>
+  <p>Prepared by Charity Moses · Pending Kelli Lewis Approval · Nothing goes live without sign-off</p>
+</header>
+<div class="pnav">
+  <button class="active" onclick="show('kw',this)">KelliWorks IG_FB</button>
+  <button onclick="show('kwa',this)">KW Accounting</button>
+  <button onclick="show('kwt',this)">KW Taxes</button>
+  <button onclick="show('ea',this)">EA</button>
+  <button onclick="show('kl',this)">Kelli LinkedIn</button>
+  <button onclick="show('gw',this)">Global Woman</button>
+  <button onclick="show('web',this)">Website+GMB+Yelp</button>
+</div>
+
+<!-- KELLIWORKS -->
+<div id="kw" class="platform active">
+  <div class="ph"><h2>KELLIWORKS MAIN — Instagram + Facebook</h2><p>1 post/day · Brand positioning · Premium firm-first tone · No EA · No book</p></div>
+
+  <div class="day"><div class="dlabel">MONDAY · APRIL 27</div>
+  <div class="card"><div class="meta"><span class="b bt">8:00 AM</span><span class="b btype">Static Post</span><span class="b bhigh">🔴 HIGH</span></div>
+  <div class="caption">The firm your business deserves does not just file reports and disappear. It embeds into your operation — learning your goals, your gaps, and your growth edge — and builds the financial systems to take you there. That is the KelliWorks difference. Book a discovery call — link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: The Firm Your Business Deserves. Navy background. Gold accent. Premium minimal. Montserrat Bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">TUESDAY · APRIL 28</div>
+  <div class="card"><div class="meta"><span class="b bt">8:00 AM</span><span class="b btype">Static Post</span><span class="b bhigh">🔴 HIGH</span></div>
+  <div class="caption">Your business is only as strong as the systems behind it. Payroll that runs on time. Books that are always clean. Reports that actually mean something. Operations that do not require your constant attention. KelliWorks builds the infrastructure so you can lead — not manage. DM us to start the conversation.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: Strong Systems. Stronger Business. Navy and gold. Clean minimal. Montserrat Bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">WEDNESDAY · APRIL 29</div>
+  <div class="card"><div class="meta"><span class="b bt">8:00 AM</span><span class="b btype">Carousel</span><span class="b bhigh">🔴 HIGH</span></div>
+  <div class="caption">Most founders are great at what they do. Running the back end of a business is a different skill set entirely. Swipe to see what KelliWorks takes off your plate — so you can focus on what only you can do. ➡️</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>5-slide carousel. Cover: What Only You Should Be Doing. Slides 2–4: Bookkeeping, Payroll, Reporting, Operations. Slide 5: CTA. Kelli's photo on cover. Navy and gold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">THURSDAY · APRIL 30</div>
+  <div class="card"><div class="meta"><span class="b bt">8:00 AM</span><span class="b btype">Static Post</span><span class="b bhigh">🔴 HIGH</span></div>
+  <div class="caption">Financial clarity is not a luxury. It is a leadership tool. The founders who make the best decisions are not the ones with the most hustle — they are the ones who always know their numbers. KelliWorks gives you that clarity every single month. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: Clarity Is a Leadership Tool. Navy background. Gold text accent. Montserrat Bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">FRIDAY · MAY 1</div>
+  <div class="card"><div class="meta"><span class="b bt">8:00 AM</span><span class="b btype">Static Post</span><span class="b bhigh">🔴 HIGH</span></div>
+  <div class="caption">Another week built on decisions — and every great decision starts with knowing your numbers. KelliWorks is here to make sure you always do. Happy May. Let's make it your strongest month yet. 🙏</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: Happy May. Let's Build. Warm premium navy and gold. KelliWorks branding.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+</div>
+
+<!-- KW ACCOUNTING -->
+<div id="kwa" class="platform">
+  <div class="ph"><h2>KELLIWORKS ACCOUNTING — Instagram + Facebook + LinkedIn</h2><p>1 post/day · 3 trending POV reels + 2 educational static · Playful, relatable, funny · ❌ No tax content</p></div>
+  <div class="ninfo">📌 New direction: Mix trending POV reels (Mon, Wed, Fri) with educational static posts (Tue, Thu). POV reels get reach. Static posts build authority.</div>
+
+  <div class="day"><div class="dlabel">MONDAY · APRIL 27</div>
+  <div class="card"><div class="meta"><span class="b bt">10:00 AM</span><span class="b btype">🎬 Trending Reel</span><span class="b btrend">🟢 TRENDING</span></div>
+  <div class="caption">POV: You haven't reconciled your accounts since January 😬
+
+#KelliWorks #Accounting #SmallBusiness #Bookkeeping #Entrepreneurs</div>
+  <div class="vbox"><strong>🎬 REEL PLACEHOLDER</strong>Trending audio — panicking/chaotic sound. Text overlay 1: POV: You haven't reconciled your accounts since January 😬. Text overlay 2: KelliWorks to the rescue 😌. 7–15 seconds. Funny reaction clip or film yourself.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">TUESDAY · APRIL 28</div>
+  <div class="card"><div class="meta"><span class="b bt">10:00 AM</span><span class="b btype">Static Post</span><span class="b bhigh">🔴 HIGH</span></div>
+  <div class="caption">Bookkeeping is not a task you do once a year at tax time. It is a system that runs every single month — keeping your business clean, your cash flow clear, and your decisions grounded in real numbers. KelliWorks builds that system for you. DM us to get started.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: Bookkeeping Is a System. Not a Task. Navy and gold. Clean minimal. Montserrat Bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">WEDNESDAY · APRIL 29</div>
+  <div class="card"><div class="meta"><span class="b bt">10:00 AM</span><span class="b btype">🎬 Trending Reel</span><span class="b btrend">🟢 TRENDING</span></div>
+  <div class="caption">POV: Your accountant actually explains your financial report instead of just sending it 😌✨
+
+#KelliWorks #Accounting #FounderLife #Bookkeeping #SmallBusiness</div>
+  <div class="vbox"><strong>🎬 REEL PLACEHOLDER</strong>Trending audio — relief/ahhh finally sound. Text overlay 1: POV: Your accountant just sends reports and disappears 😩. Text overlay 2: POV: KelliWorks actually explains every line 😌. 7–15 seconds.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">THURSDAY · APRIL 30</div>
+  <div class="card"><div class="meta"><span class="b bt">10:00 AM</span><span class="b btype">Static Post</span><span class="b bhigh">🔴 HIGH</span></div>
+  <div class="caption">Do you know exactly how your business performed in Q1? Revenue. Expenses. Profit. Cash flow. If the honest answer is no — that is the first thing to fix. KelliWorks delivers monthly reports that give you a clear picture of your business performance so you always know where you stand. DM us.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: Do You Know Your Q1 Numbers? Navy and gold. Clean bold layout. Montserrat Bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">FRIDAY · MAY 1</div>
+  <div class="card"><div class="meta"><span class="b bt">10:00 AM</span><span class="b btype">🎬 Trending Reel</span><span class="b btrend">🟢 TRENDING</span></div>
+  <div class="caption">POV: It's May 1st and your books are finally clean 😎🙌
+
+#KelliWorks #NewMonth #Accounting #FounderLife #SmallBusiness</div>
+  <div class="vbox"><strong>🎬 REEL PLACEHOLDER</strong>Trending audio — winning/celebration sound. Text overlay 1: POV: It's May 1st and you still don't know your numbers 😬. Text overlay 2: POV: KelliWorks client on May 1st 😎. Confident winning reaction. 7–15 seconds.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+</div>
+
+<!-- KW TAXES -->
+<div id="kwt" class="platform">
+  <div class="ph"><h2>KELLIWORKS TAXES — Taxes Instagram ONLY</h2><p>2 posts/day · Tips, quotes, carousels · ❌ NOT on LinkedIn ❌ NOT on KW Accounting grid</p></div>
+
+  <div class="day"><div class="dlabel">MONDAY · APRIL 27</div>
+  <div class="card"><div class="meta"><span class="b bt">7:00 AM</span><span class="b btype">💡 Tax Tip</span></div>
+  <div class="caption">Welcome to May — and Q2 estimated taxes are already counting. June 15 is closer than you think. If your business is profitable start setting money aside right now. KelliWorks keeps you on schedule all year. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: Q2 Is Already Counting. Navy gold bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div>
+  <div class="card"><div class="meta"><span class="b bt">4:00 PM</span><span class="b btype">💬 Quote</span></div>
+  <div class="caption">"KelliWorks, so you don't have to." Tax season is done. But smart tax planning never stops. Let us carry it all year long. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Brand quote card — cream background navy and gold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">TUESDAY · APRIL 28</div>
+  <div class="card"><div class="meta"><span class="b bt">7:00 AM</span><span class="b btype">💡 Tax Tip</span></div>
+  <div class="caption">If you received a large refund this year — that is not good news. It means you overpaid the IRS all year and gave them an interest-free loan. KelliWorks helps you adjust your withholding so you keep more money in your business where it belongs. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: A Big Refund Means You Overpaid. Navy gold bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div>
+  <div class="card"><div class="meta"><span class="b bt">4:00 PM</span><span class="b btype">🎠 Carousel</span></div>
+  <div class="caption">Tax season is over — but your tax strategy should not be. Swipe to see 4 moves every entrepreneur should make RIGHT NOW to protect their finances for the rest of 2025. ➡️</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>5-slide carousel — 4 Post Tax Season Moves. Navy and gold. Montserrat Bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">WEDNESDAY · APRIL 29</div>
+  <div class="card"><div class="meta"><span class="b bt">7:00 AM</span><span class="b btype">💡 Tax Tip</span></div>
+  <div class="caption">Are you paying yourself correctly as a business owner? How you pay yourself — salary, owner's draw, distributions — has major tax implications. Getting it wrong costs you money. KelliWorks helps you structure it right. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: Are You Paying Yourself Correctly? Navy gold bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div>
+  <div class="card"><div class="meta"><span class="b bt">4:00 PM</span><span class="b btype">💬 Quote</span></div>
+  <div class="caption">"Tax preparation is no longer the same with modern accounting methods." — Kelli Lewis. Stop doing it the old way. KelliWorks brings modern solutions to your finances all year round. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Quote card — cream background elegant premium. Kelli Lewis attribution gold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">THURSDAY · APRIL 30</div>
+  <div class="card"><div class="meta"><span class="b bt">7:00 AM</span><span class="b btype">💡 Tax Tip</span></div>
+  <div class="caption">Tax Tip Thursday 💡 Keep every business receipt — digital or physical. The IRS requires documentation for every deduction you claim. KelliWorks helps you set up a simple system so nothing ever gets lost. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Tax Tip Thursday branded graphic — navy gold bold headline.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div>
+  <div class="card"><div class="meta"><span class="b bt">4:00 PM</span><span class="b btype">🎠 Carousel</span></div>
+  <div class="caption">Your Q2 financial checklist starts NOW. Swipe to see exactly what every smart entrepreneur should be doing this month to stay ahead. ➡️</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>5-slide carousel — Q2 Financial Checklist. Navy and gold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">FRIDAY · MAY 1</div>
+  <div class="card"><div class="meta"><span class="b bt">7:00 AM</span><span class="b btype">💡 Tax Tip</span></div>
+  <div class="caption">Happy May! New month — new opportunity to get your finances right. Is your business structure still working for you? LLC. S-Corp. Sole Proprietor. Each has different tax implications. KelliWorks can review your setup and help you optimize. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Headline: New Month. New Financial Strategy. Navy gold bold.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div>
+  <div class="card"><div class="meta"><span class="b bt">4:00 PM</span><span class="b btype">💬 Quote</span></div>
+  <div class="caption">"KelliWorks takes the burden off entrepreneurs by guiding them in planning their taxes." Tax season is done. The work is not. Let us carry it. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Quote card — cream premium elegant. Gold attribution. KelliWorks footer.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+</div>
+
+<!-- EA -->
+<div id="ea" class="platform">
+  <div class="ph"><h2>ENTREPRENEURS ANONYMOUS — IG + FB + YouTube + Skool</h2><p>Meeting rhythm · General EA community content only this week</p></div>
+  <div class="nalert">⚠️ No EA meeting promotion this week per Kelli's instruction. Community value and evergreen content only.</div>
+
+  <div class="day"><div class="dlabel">MONDAY · APRIL 27</div>
+  <div class="card"><div class="meta"><span class="b bt">12:00 PM</span><span class="b btype">Static Post</span></div>
+  <div class="caption">Entrepreneurship is the loneliest journey — until you find your community. Entrepreneurs Anonymous exists because no founder should have to build alone. Join the community — link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>EA branded graphic. Headline: You Were Never Meant to Build Alone. Dark background gold accent. EA logo.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">WEDNESDAY · APRIL 29</div>
+  <div class="card"><div class="meta"><span class="b bt">12:00 PM</span><span class="b btype">Quote Post</span></div>
+  <div class="caption">The room changes when entrepreneurs stop competing and start collaborating. That is what Entrepreneurs Anonymous is built on. Real conversations. Real connections. Real growth. Link in bio to join the community.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>EA quote graphic — dark navy gold. Headline: Real Conversations. Real Growth.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">FRIDAY · MAY 1</div>
+  <div class="card"><div class="meta"><span class="b bt">12:00 PM</span><span class="b btype">Community Post</span></div>
+  <div class="caption">Happy May EA family! 🙌 New month. New energy. New opportunities. Whatever you are building — keep going. This community is rooting for you. — Kelli Lewis | Entrepreneurs Anonymous</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>EA community graphic — warm celebratory energy. Happy May. Gold and navy. EA logo.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+</div>
+
+<!-- KELLI LINKEDIN -->
+<div id="kl" class="platform">
+  <div class="ph"><h2>KELLI LEWIS PERSONAL — LinkedIn</h2><p>1 post/day · Author · Speaker · Coach · Accountant · 30 min daily engagement · ❌ No tax content</p></div>
+
+  <div class="day"><div class="dlabel">MONDAY · APRIL 27</div>
+  <div class="card"><div class="meta"><span class="b bt">9:00 AM</span><span class="b btype">Thought Leadership</span></div>
+  <div class="caption">The founders who scale the fastest are not the ones who work the hardest. They are the ones who build the best systems. A business that requires your constant presence to function is not a business — it is a job. And it is probably the most demanding job you have ever had. The shift starts when you stop being the engine and start being the architect. What is one system you could build this week that would give you back an hour of your time?</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Professional Kelli photo — editorial, confident. Or clean branded quote graphic.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">TUESDAY · APRIL 28</div>
+  <div class="card"><div class="meta"><span class="b bt">9:00 AM</span><span class="b btype">Founder Story</span></div>
+  <div class="caption">I spent years being the best-kept secret in my clients' businesses. Doing everything. Available always. Undercharging constantly. I thought that was the price of loyalty. What I actually learned is that boundaries create respect. Systems create freedom. And charging your worth creates the business you deserve. If you are still giving everything away in the name of dedication — this is your sign to stop.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Professional Kelli photo — warm, authoritative. Or clean branded graphic.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">WEDNESDAY · APRIL 29</div>
+  <div class="card"><div class="meta"><span class="b bt">9:00 AM</span><span class="b btype">Thought Leadership</span></div>
+  <div class="caption">Financial clarity is not a finance topic. It is a leadership topic. When you know your numbers — your cash position, your profit margin, your burn rate — you make decisions from a place of power instead of panic. The most confident founders I know are not the richest. They are the most informed. KelliWorks gives founders that clarity every single month. Link in bio.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Clean branded KelliWorks graphic — professional LinkedIn format.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">THURSDAY · APRIL 30</div>
+  <div class="card"><div class="meta"><span class="b bt">9:00 AM</span><span class="b btype">Coaching Voice</span></div>
+  <div class="caption">One question I ask every founder I work with: If you took two weeks completely off right now — what would break? The answer tells you everything about where your business actually stands. Not where you think it stands. Where it actually stands. Your answer is your to-do list.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Professional Kelli photo or clean quote graphic — coaching voice, direct, confident.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">FRIDAY · MAY 1</div>
+  <div class="card"><div class="meta"><span class="b bt">9:00 AM</span><span class="b btype">Friday Reflection</span></div>
+  <div class="caption">Happy May. New month. Fresh start. This is the month you stop running your business on instinct and start running it on intelligence. Clean books. Clear strategy. Confident decisions. That is what I help founders build at KelliWorks — and it starts with one conversation. Link in bio. Have a powerful weekend. 🙏</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Polished Kelli brand photo or Happy May branded graphic. Warm professional.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+</div>
+
+<!-- GLOBAL WOMAN -->
+<div id="gw" class="platform">
+  <div class="ph"><h2>GLOBAL WOMAN — Global Woman Platform</h2><p>Min 4 posts/week · 10–15 min daily engagement · Kelli as THOUGHT LEADER — specific POV, industry insight · ❌ No generic motivation · ❌ No EA content</p></div>
+
+  <div class="day"><div class="dlabel">MONDAY · APRIL 27</div>
+  <div class="card"><div class="meta"><span class="b bt">11:00 AM</span><span class="b btype">Thought Leadership</span></div>
+  <div class="caption">I have worked with hundreds of women-owned businesses. And the number one thing that keeps them stuck is not lack of hustle — it is lack of financial infrastructure. They are working incredibly hard inside a business that has no system to hold the growth. Here is what I know to be true: you cannot scale chaos. Before you invest in marketing, hiring, or expansion — get your books clean, your cash flow clear, and your reporting consistent. That is the foundation everything else is built on. — Kelli Lewis | Founder, KelliWorks</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Editorial Kelli photo — confident, authoritative. Navy and gold. Premium feminine.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">TUESDAY · APRIL 28</div>
+  <div class="card"><div class="meta"><span class="b bt">11:00 AM</span><span class="b btype">Industry POV</span></div>
+  <div class="caption">Nobody talks about this enough — women entrepreneurs are statistically more likely to undercharge, over-deliver, and avoid looking at their own numbers. I did it too. For years I helped wealthy clients build financial systems while my own business was falling apart. The moment I started treating my business with the same rigor I applied to my clients' — everything changed. Your business deserves the same financial discipline you give your best client. Start there. — Kelli Lewis | KelliWorks</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Professional Kelli photo — warm, real, editorial. Not a headshot. Premium feminine.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">THURSDAY · APRIL 30</div>
+  <div class="card"><div class="meta"><span class="b bt">11:00 AM</span><span class="b btype">Expert Insight</span></div>
+  <div class="caption">A question I get asked constantly by women founders: "When is the right time to hire an accountant?" My answer is always the same — before you think you need one. Most founders come to KelliWorks after something breaks. A tax surprise. A cash flow crisis. A payroll error. The ones who build the most sustainably are the ones who build the financial infrastructure early — before the growth exposes the gaps. Do not wait for the emergency. Build the system now. — Kelli Lewis | KelliWorks Founder</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Clean expert insight graphic — pull quote. Premium navy and gold. Feminine authoritative.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">FRIDAY · MAY 1</div>
+  <div class="card"><div class="meta"><span class="b bt">11:00 AM</span><span class="b btype">Thought Leadership</span></div>
+  <div class="caption">May is here. And I want to challenge every woman founder reading this to ask herself one honest question: Does my business have the financial infrastructure to handle the growth I am praying for? Because here is the truth — most businesses are not ready for the opportunities they are asking God to send. The clients come and the systems collapse. The revenue grows and the cash flow disappears. Growth without infrastructure is just expensive chaos. This month — build the foundation first. — Kelli Lewis | KelliWorks | Global Business Woman</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Premium Kelli editorial photo or branded thought leadership graphic. Authoritative not celebratory. Navy gold feminine.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+</div>
+
+<!-- WEBSITE -->
+<div id="web" class="platform">
+  <div class="ph"><h2>WEBSITE + GOOGLE MY BUSINESS + YELP</h2><p>Weekly tasks · Blog post · GMB + Yelp refresh</p></div>
+
+  <div class="day"><div class="dlabel">MONDAY · APRIL 27 — BLOG POST</div>
+  <div class="card"><div class="meta"><span class="b bt">EOD</span><span class="b btype">Lovable Website</span></div>
+  <div class="caption">Suggested title: "5 Signs Your Business Needs a Better Accounting System (And What to Do About It)" — accounting focused, ties to KelliWorks services, CTA to book a discovery call. Charity to draft and submit to Kelli for approval before publishing.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Blog header image — professional KelliWorks branded. Kelli photo or brand graphic.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">THIS WEEK — GOOGLE MY BUSINESS</div>
+  <div class="card"><div class="meta"><span class="b bt">By Fri May 1</span><span class="b btype">GMB Update</span></div>
+  <div class="caption">Post update: "Welcome to May — KelliWorks is your full-service accounting and business management firm for ambitious founders. Clean books. Clear strategy. Confident growth. Book a discovery call today." Include a fresh professional brand photo.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Fresh KelliWorks brand photo or professional team photo for GMB.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+
+  <div class="day"><div class="dlabel">THIS WEEK — YELP</div>
+  <div class="card"><div class="meta"><span class="b bt">By Fri May 1</span><span class="b btype">Yelp Update</span></div>
+  <div class="caption">Refresh Yelp listing — ensure services are current, photos are fresh. Tax season has ended — shift messaging to year-round accounting and business management services.</div>
+  <div class="vbox"><strong>📸 VISUAL PLACEHOLDER</strong>Fresh Yelp photo — professional KelliWorks branded image.</div>
+  <div class="arow"><label>Kelli:</label><select onchange="ss(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="nin" type="text" placeholder="Kelli's notes..."></div></div></div>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.platform').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.pnav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function ss(sel){
+  sel.className='';
+  if(sel.value.includes('Approved'))sel.className='approved';
+  else if(sel.value.includes('Edits'))sel.className='edits';
+  else if(sel.value.includes('Do Not'))sel.className='no';
+}
+</script>
+</body>
+</html>

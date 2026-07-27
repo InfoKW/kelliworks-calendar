@@ -190,7 +190,7 @@ is already rendered in the DOM when Kelli taps approve.
 ### Message format:
 ```
 Kelli approved a post
-Platform: KelliWorks IG+FB
+Platform: KelliWorks IG_FB
 Day: MONDAY - APRIL 27
 Time: 8:00 AM
 Content type: Static Post
