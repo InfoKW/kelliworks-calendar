@@ -45,57 +45,11 @@ export default async function handler(req, res) {
       if (!networks?.length) return res.status(400).json({ error: 'networks array required' });
       if (!publicationDate)  return res.status(400).json({ error: 'publicationDate required' });
 
-      // Step 1 — Normalize each media URL to get a Metricool mediaId.
-      // Per Metricool docs: GET /api/actions/normalize/image/url?url=<PUBLIC_URL>
-      // Only X-Mc-Auth header required. URL must be public and non-expiring.
+      // Media field must be a plain array of URL strings — not objects.
+      // Correct:   "media": ["https://..."]
+      // Incorrect: "media": [{ "url": "https://..." }] or [{ "mediaId": "..." }]
       const validUrls = (mediaUrls || []).filter(u => typeof u === 'string' && u.startsWith('http'));
-      const mediaIds  = [];
-
-      // Normalize uses GET with no body — only X-Mc-Auth, no Content-Type.
-      // Sending Content-Type: application/json on a GET causes Metricool to
-      // return 500 "No acceptable representation".
-      const mcGetHeaders = { 'X-Mc-Auth': apiKey };
-
-      for (const rawUrl of validUrls) {
-        try {
-          const normalizeEndpoint =
-            `https://app.metricool.com/api/actions/normalize/image/url` +
-            `?url=${encodeURIComponent(rawUrl)}`;
-
-          const nr   = await fetch(normalizeEndpoint, { headers: mcGetHeaders });
-          const body = await nr.text();
-          console.log('[metricool] normalize status:', nr.status, '| body:', body);
-
-          // Response can be:
-          //   A) JSON with a mediaId field  → use { mediaId }
-          //   B) Plain-text URL             → Metricool accepted the URL as-is;
-          //                                   use { url } directly in the media field
-          let nd;
-          try { nd = JSON.parse(body); } catch { nd = null; }
-
-          const mediaId = nd?.mediaId ?? nd?.data?.mediaId ?? nd?.id ?? nd?.data?.id ?? null;
-          const plainUrl = (!nd && body.trim().startsWith('http')) ? body.trim() : null;
-
-          if (mediaId) {
-            console.log('[metricool] got mediaId:', mediaId);
-            mediaIds.push({ mediaId: String(mediaId) });
-          } else if (plainUrl) {
-            console.log('[metricool] normalize returned URL directly — using as media url:', plainUrl);
-            mediaIds.push({ url: plainUrl });
-          } else {
-            console.warn('[metricool] normalize returned no mediaId or URL. Full response:', body);
-          }
-        } catch (e) {
-          console.error('[metricool] normalize error for', rawUrl, ':', e.message);
-        }
-      }
-
-      // Step 2 — Build the post payload with mediaId(s).
-      // Single image: media: { mediaId }
-      // Multiple images: media: [{ mediaId }, ...]
-      const mediaField =
-        mediaIds.length === 1 ? mediaIds[0] :
-        mediaIds.length  > 1 ? mediaIds     : null;
+      const mediaField = validUrls.length ? validUrls : null;
 
       const payload = {
         publicationDate: {
