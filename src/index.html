@@ -2095,16 +2095,18 @@ async function scheduleInMetricool(postId) {
   // Collect HTTP media URLs (data: URIs cannot be passed to Metricool)
   const mediaUrls = [];
 
-  // Single uploaded image (non-carousel)
-  if (post.mediaDataUrl?.startsWith('http')) mediaUrls.push(post.mediaDataUrl);
-
-  // Carousel — stored as plain URL strings, not objects
+  // Carousel — stored as plain URL strings
   if (Array.isArray(post.mediaDataUrls)) {
     post.mediaDataUrls.forEach(u => { if (typeof u === 'string' && u.startsWith('http')) mediaUrls.push(u); });
   }
 
-  // Fall back to MEDIA_MANIFEST using getMedia() — same logic as buildCarousel,
-  // including its fallback to the base post's original date when dates are edited.
+  // Single uploaded image (Cloudinary secure_url)
+  if (!mediaUrls.length && post.mediaDataUrl?.startsWith('http')) mediaUrls.push(post.mediaDataUrl);
+
+  // External / Drive image_url field
+  if (!mediaUrls.length && post.image_url?.startsWith('http')) mediaUrls.push(post.image_url);
+
+  // Fall back to MEDIA_MANIFEST
   if (!mediaUrls.length) {
     getMedia(post).forEach(m => {
       const url = mediaUrl(m.path);
