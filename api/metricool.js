@@ -66,17 +66,24 @@ export default async function handler(req, res) {
           const body = await nr.text();
           console.log('[metricool] normalize status:', nr.status, '| body:', body);
 
+          // Response can be:
+          //   A) JSON with a mediaId field  → use { mediaId }
+          //   B) Plain-text URL             → Metricool accepted the URL as-is;
+          //                                   use { url } directly in the media field
           let nd;
-          try { nd = JSON.parse(body); } catch { nd = {}; }
+          try { nd = JSON.parse(body); } catch { nd = null; }
 
-          // Walk the response to find any field that looks like a media ID
           const mediaId = nd?.mediaId ?? nd?.data?.mediaId ?? nd?.id ?? nd?.data?.id ?? null;
+          const plainUrl = (!nd && body.trim().startsWith('http')) ? body.trim() : null;
 
           if (mediaId) {
-            console.log('[metricool] got mediaId:', mediaId, 'for url:', rawUrl);
+            console.log('[metricool] got mediaId:', mediaId);
             mediaIds.push({ mediaId: String(mediaId) });
+          } else if (plainUrl) {
+            console.log('[metricool] normalize returned URL directly — using as media url:', plainUrl);
+            mediaIds.push({ url: plainUrl });
           } else {
-            console.warn('[metricool] normalize returned no mediaId. Full response:', body);
+            console.warn('[metricool] normalize returned no mediaId or URL. Full response:', body);
           }
         } catch (e) {
           console.error('[metricool] normalize error for', rawUrl, ':', e.message);
