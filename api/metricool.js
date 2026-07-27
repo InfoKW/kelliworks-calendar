@@ -3,14 +3,12 @@
 // Env vars required (add to Vercel dashboard):
 //   METRICOOL_API_KEY  — the REST API key from Metricool → Account Settings → API
 //
-// Actions:
-//   GET  /api/metricool?action=brands&userId=XXX  → list brands for the account
-//   POST /api/metricool?action=schedule            → schedule a post
+// Media flow (per Metricool docs):
+//   1. Call normalize endpoint with the public Cloudinary URL → get mediaId
+//   2. Include mediaId in the post body when scheduling
 //
-// Media approach: Cloudinary URLs are passed directly in the payload as
-// mediaUrls — no downloading, no re-uploading, no normalize step.
-// Metricool fetches the image from Cloudinary on their end, the same way
-// it does when you paste a URL into their UI.
+// Normalize endpoint: GET /api/actions/normalize/image/url?url=<URL>
+//   - Only X-Mc-Auth header needed — no userId/blogId in query params
 
 const BASE = 'https://app.metricool.com/api/v2';
 
@@ -29,11 +27,10 @@ export default async function handler(req, res) {
   };
 
   try {
-    // ── List brands (discover userId + blogId) ───────────────────────────
+    // ── List brands ──────────────────────────────────────────────────────
     if (action === 'brands' && req.method === 'GET') {
       const { userId } = req.query;
       if (!userId) return res.status(400).json({ error: 'userId query param required' });
-
       const r = await fetch(`${BASE}/user/blogs?userId=${userId}`, { headers: mcHeaders });
       const data = await r.json();
       return res.status(r.ok ? 200 : r.status).json(data);
@@ -48,14 +45,45 @@ export default async function handler(req, res) {
       if (!networks?.length) return res.status(400).json({ error: 'networks array required' });
       if (!publicationDate)  return res.status(400).json({ error: 'publicationDate required' });
 
-      // Pass image/video URLs directly — Metricool fetches them on their end.
-      // Decode any percent-encoded characters so the URL is clean (e.g. %2B → _
-      // has already been fixed at the source, but just in case).
-      const validUrls = (mediaUrls || [])
-        .filter(u => typeof u === 'string' && u.startsWith('http'))
-        .map(u => {
-          try { return decodeURIComponent(u); } catch { return u; }
-        });
+      // Step 1 — Normalize each media URL to get a Metricool mediaId.
+      // Per Metricool docs: GET /api/actions/normalize/image/url?url=<PUBLIC_URL>
+      // Only X-Mc-Auth header required. URL must be public and non-expiring.
+      const validUrls = (mediaUrls || []).filter(u => typeof u === 'string' && u.startsWith('http'));
+      const mediaIds  = [];
+
+      for (const rawUrl of validUrls) {
+        try {
+          const normalizeEndpoint =
+            `https://app.metricool.com/api/actions/normalize/image/url` +
+            `?url=${encodeURIComponent(rawUrl)}`;
+
+          const nr   = await fetch(normalizeEndpoint, { headers: mcHeaders });
+          const body = await nr.text();
+          console.log('[metricool] normalize status:', nr.status, '| body:', body);
+
+          let nd;
+          try { nd = JSON.parse(body); } catch { nd = {}; }
+
+          // Walk the response to find any field that looks like a media ID
+          const mediaId = nd?.mediaId ?? nd?.data?.mediaId ?? nd?.id ?? nd?.data?.id ?? null;
+
+          if (mediaId) {
+            console.log('[metricool] got mediaId:', mediaId, 'for url:', rawUrl);
+            mediaIds.push({ mediaId: String(mediaId) });
+          } else {
+            console.warn('[metricool] normalize returned no mediaId. Full response:', body);
+          }
+        } catch (e) {
+          console.error('[metricool] normalize error for', rawUrl, ':', e.message);
+        }
+      }
+
+      // Step 2 — Build the post payload with mediaId(s).
+      // Single image: media: { mediaId }
+      // Multiple images: media: [{ mediaId }, ...]
+      const mediaField =
+        mediaIds.length === 1 ? mediaIds[0] :
+        mediaIds.length  > 1 ? mediaIds     : null;
 
       const payload = {
         publicationDate: {
@@ -65,10 +93,10 @@ export default async function handler(req, res) {
         text:        text || '',
         providers:   networks.map(n => ({ network: n })),
         autoPublish: true,
-        ...(validUrls.length ? { mediaUrls: validUrls } : {}),
+        ...(mediaField ? { media: mediaField } : {}),
       };
 
-      console.log('[metricool proxy] payload:', JSON.stringify(payload, null, 2));
+      console.log('[metricool] scheduling payload:', JSON.stringify(payload, null, 2));
 
       const r = await fetch(
         `${BASE}/scheduler/posts?userId=${userId}&blogId=${blogId}`,
@@ -76,15 +104,15 @@ export default async function handler(req, res) {
       );
 
       const rawText = await r.text();
-      console.log('[metricool proxy] Metricool response:', rawText);
+      console.log('[metricool] schedule response:', rawText);
 
       let data;
       try { data = JSON.parse(rawText); } catch { data = { raw: rawText }; }
 
       if (!r.ok) {
         return res.status(r.status).json({
-          error: data?.error || data?.message || rawText,
-          metricoolStatus: r.status,
+          error:             data?.error || data?.message || rawText,
+          metricoolStatus:   r.status,
           metricoolResponse: data,
         });
       }
