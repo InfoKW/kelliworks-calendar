@@ -1622,9 +1622,11 @@ async function sendNote(input, postId, platform, dayLabel, postTime, contentType
   const saved = loadApproval(postId);
   await saveApproval(postId, { status: saved.status || 'pending', note });
   const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
+  const siteUrl = window.location.origin;
   const text = ['\ud83d\udcac Kelli left a note', `Platform: ${platformName}`, `Day: ${dayLabel}`,
     `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`,
-    `Approval status: ${approvalStatus}`, `Note: ${note}`].join('\n');
+    `Approval status: ${approvalStatus}`, `Note: ${note}`,
+    `<${siteUrl}|👉 View on KW Calendar>`].join('\n');
   try {
     const res = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
     if (!res.ok) throw new Error(`Server returned ${res.status}`);
@@ -1645,8 +1647,10 @@ async function sendNote(input, postId, platform, dayLabel, postTime, contentType
 
 async function notifySlack(platform, dayLabel, postTime, contentType) {
   const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
+  const siteUrl = window.location.origin;
   const text = ['\u2705 Kelli approved a post', `Platform: ${platformName}`, `Day: ${dayLabel}`,
-    `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`].join('\n');
+    `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`,
+    `<${siteUrl}|👉 View on KW Calendar>`].join('\n');
   try {
     await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
   } catch(e) { console.warn('Slack notify failed:', e.message); }
@@ -2040,8 +2044,9 @@ async function publishForReview(platform) {
 
     // Send Slack notifications — channel + Kelli DM (only on Vercel)
     if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-      const channelText = '📋 New edits have been published for *' + platformName + '*. Awaiting review & Approval from Kelli.';
-      const dmText = 'Hello Kelli, Charity has uploaded new content for *' + platformName + '*. Kindly Review and Approve 🙏';
+      const siteUrl = window.location.origin;
+      const channelText = '📋 New edits have been published for *' + platformName + '*. Awaiting review & Approval from Kelli.\n<' + siteUrl + '|👉 Click here to review>';
+      const dmText = 'Hello Kelli, Charity has uploaded new content for *' + platformName + '*. Kindly Review and Approve 🙏\n<' + siteUrl + '|👉 Tap here to review the content>';
       const res = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ channelText, dmText }) });
       if (!res.ok) console.warn('Slack notify failed:', res.status);
     }
