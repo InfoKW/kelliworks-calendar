@@ -2044,7 +2044,7 @@ async function publishForReview(platform) {
 
     // Send Slack notifications — channel + Kelli DM (only on Vercel)
     if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-      const reviewUrl = window.location.origin + '?role=kelli&platform=' + platform;
+      const reviewUrl = window.location.origin + '/review/' + platform;
       const channelText = '📋 New edits have been published for *' + platformName + '*. Awaiting review & Approval from Kelli.\n<' + reviewUrl + '|👉 Click here to review>';
       const dmText = 'Hello Kelli, Charity has uploaded new content for *' + platformName + '*. Kindly Review and Approve 🙏\n<' + reviewUrl + '|👉 Tap here to review the content>';
       const res = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ channelText, dmText }) });
@@ -2260,13 +2260,24 @@ window.resetMetricoolSchedule = resetMetricoolSchedule;
 startApprovalListener();
 startMetricoolListener();
 
-// Deep-link support: ?role=kelli&platform=kw
-// When Kelli taps a Slack link it auto-enters the right mode and platform tab.
+// Deep-link support
+// /review/:platform  → Kelli's review mode on that tab (sent via Slack)
+// ?role=charity&platform=xxx → Charity view on that tab
 (function initFromUrl() {
-  const params = new URLSearchParams(window.location.search);
+  // Path-based: /review/eal → Kelli approve mode on EA LinkedIn tab
+  const pathMatch = window.location.pathname.match(/^\/review\/([a-z]+)$/);
+  if (pathMatch) {
+    const platform = pathMatch[1];
+    enterApproveMode();
+    const btn = document.querySelector(`.platform-nav button[onclick*="'${platform}'"]`);
+    if (btn) showPlatform(platform, btn);
+    return;
+  }
+  // Query param fallback: ?role=charity&platform=kw
+  const params   = new URLSearchParams(window.location.search);
   const role     = params.get('role');
   const platform = params.get('platform');
-  if (role === 'kelli')   enterApproveMode();
+  if (role === 'kelli')        enterApproveMode();
   else if (role === 'charity') enterCharityMode();
   if (platform && (role === 'kelli' || role === 'charity')) {
     const btn = document.querySelector(`.platform-nav button[onclick*="'${platform}'"]`);
