@@ -1622,7 +1622,7 @@ async function sendNote(input, postId, platform, dayLabel, postTime, contentType
   const saved = loadApproval(postId);
   await saveApproval(postId, { status: saved.status || 'pending', note });
   const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
-  const reviewUrl = window.location.origin + '?role=charity&platform=' + platform;
+  const reviewUrl = window.location.origin + '/manage/' + platform;
   const text = ['\ud83d\udcac Kelli left a note', `Platform: ${platformName}`, `Day: ${dayLabel}`,
     `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`,
     `Approval status: ${approvalStatus}`, `Note: ${note}`,
@@ -1647,7 +1647,7 @@ async function sendNote(input, postId, platform, dayLabel, postTime, contentType
 
 async function notifySlack(platform, dayLabel, postTime, contentType) {
   const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
-  const reviewUrl = window.location.origin + '?role=charity&platform=' + platform;
+  const reviewUrl = window.location.origin + '/manage/' + platform;
   const text = ['\u2705 Kelli approved a post', `Platform: ${platformName}`, `Day: ${dayLabel}`,
     `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`,
     `<${reviewUrl}|👉 View on KW Calendar>`].join('\n');
@@ -2261,27 +2261,27 @@ startApprovalListener();
 startMetricoolListener();
 
 // Deep-link support
-// /review/:platform  → Kelli's review mode on that tab (sent via Slack)
-// ?role=charity&platform=xxx → Charity view on that tab
+// /review/:platform → Kelli's review mode on that tab
+// /manage/:platform → Charity's manage mode on that tab
 (function initFromUrl() {
-  // Path-based: /review/eal → Kelli approve mode on EA LinkedIn tab
-  const pathMatch = window.location.pathname.match(/^\/review\/([a-z]+)$/);
-  if (pathMatch) {
-    const platform = pathMatch[1];
+  const path = window.location.pathname;
+
+  const reviewMatch = path.match(/^\/review\/([a-z]+)$/);
+  if (reviewMatch) {
+    const platform = reviewMatch[1];
     enterApproveMode();
     const btn = document.querySelector(`.platform-nav button[onclick*="'${platform}'"]`);
     if (btn) showPlatform(platform, btn);
     return;
   }
-  // Query param fallback: ?role=charity&platform=kw
-  const params   = new URLSearchParams(window.location.search);
-  const role     = params.get('role');
-  const platform = params.get('platform');
-  if (role === 'kelli')        enterApproveMode();
-  else if (role === 'charity') enterCharityMode();
-  if (platform && (role === 'kelli' || role === 'charity')) {
+
+  const manageMatch = path.match(/^\/manage\/([a-z]+)$/);
+  if (manageMatch) {
+    const platform = manageMatch[1];
+    enterCharityMode();
     const btn = document.querySelector(`.platform-nav button[onclick*="'${platform}'"]`);
     if (btn) showPlatform(platform, btn);
+    return;
   }
 })();
 </script>
