@@ -14,13 +14,10 @@
 
 ---
 
+## PLATFORM: eal
+
+---
+
 ## PLATFORM: kl
 
 ---
-
-## PLATFORM: gw
-
----
-
-## PLATFORM: web
-

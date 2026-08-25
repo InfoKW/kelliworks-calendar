@@ -296,7 +296,7 @@
       margin-bottom: -1px;
     }
     .platform-nav button:hover { color: var(--navy); }
-    .platform-nav button.active { color: var(--navy); border-bottom-color: var(--gold); font-weight: 600; }
+    .platform-nav button.active { color: var(--navy); border-bottom-color: var(--gold); font-weight: 600; }\n    .platform-nav button.tab-inactive { color: var(--text-muted); opacity: 0.45; cursor: not-allowed; pointer-events: none; font-style: italic; }
 
     /* ══════════════════════════════════════════
        PLATFORM SECTIONS
@@ -924,13 +924,13 @@
   </header>
 
   <nav class="platform-nav">
-    <button class="active" onclick="showPlatform('kw',this)">KelliWorks IG_FB</button>
-    <button onclick="showPlatform('kwa',this)">KW Accounting</button>
-    <button onclick="showPlatform('kwt',this)">KW Taxes</button>
-    <button onclick="showPlatform('ea',this)">EA</button>
+    <button class="active" onclick="showPlatform('kw',this)">KelliWorks IG</button>
+    <button onclick="showPlatform('kwa',this)">KW Accounting LinkedIn</button>
+    <button onclick="showPlatform('kwt',this)">KW Taxes IG</button>
+    <button onclick="showPlatform('ea',this)">EA IG</button>
+    <button onclick="showPlatform('eal',this)">EA LinkedIn</button>
     <button onclick="showPlatform('kl',this)">Kelli LinkedIn</button>
-    <button onclick="showPlatform('gw',this)">Global Woman</button>
-    <button onclick="showPlatform('web',this)">Website_GMB</button>
+    <!-- tabs 7-10 hidden: Global Woman, EA Website, GMB, Yelp -->
   </nav>
 
   <div id="calendar-body">
@@ -938,9 +938,8 @@
     <div class="platform" id="platform-kwa"></div>
     <div class="platform" id="platform-kwt"></div>
     <div class="platform" id="platform-ea"></div>
+    <div class="platform" id="platform-eal"></div>
     <div class="platform" id="platform-kl"></div>
-    <div class="platform" id="platform-gw"></div>
-    <div class="platform" id="platform-web"></div>
   </div>
 </div>
 
@@ -1064,16 +1063,15 @@ const _fbApp = initializeApp({
 });
 const db = getFirestore(_fbApp);
 
-const PLATFORMS = ['kw','kwa','kwt','ea','kl','gw','web'];
+const PLATFORMS = ['kw','kwa','kwt','ea','eal','kl'];
 
 const PLATFORM_META = {
-  kw:  { name: 'KELLIWORKS MAIN — Instagram_Facebook',                  sub: '1 post/day · Brand positioning · Premium firm-first tone · No EA promotion · No book promotion' },
-  kwa: { name: 'KELLIWORKS ACCOUNTING — Instagram_Facebook_LinkedIn', sub: '1 post/day · Mix of trending POV reels + educational static · Playful, funny, relatable · ❌ No tax content' },
-  kwt: { name: 'KELLIWORKS TAXES — Instagram Only',                       sub: '2 posts/day · Tips, quotes, carousels · ❌ NOT on LinkedIn · ❌ NOT on KW Accounting grid' },
-  ea:  { name: 'ENTREPRENEURS ANONYMOUS — IG_FB_YouTube_Skool',     sub: 'Meeting rhythm · ❌ No meeting promotion until Kelli confirms · General EA community content only' },
-  kl:  { name: 'KELLI LEWIS PERSONAL — LinkedIn',                         sub: '1 post/day · Author · Speaker · Coach · Accountant · 30 min daily engagement · ❌ No tax content' },
-  gw:  { name: 'GLOBAL WOMAN — Global Woman Platform',                    sub: 'Min 4 posts/week · 10–15 min daily engagement · Kelli as THOUGHT LEADER — specific POV, industry insight, expertise · ❌ No generic motivation · ❌ No EA content' },
-  web: { name: 'WEBSITE_GOOGLE MY BUSINESS_YELP',                     sub: 'Weekly tasks · Blog post · EA website update · GMB_Yelp refresh' },
+  kw:  { name: 'KELLIWORKS IG — Accounting Services',                   sub: '1 post/day · All posts related to KelliWorks Accounting services · Brand positioning · Premium firm-first tone · No EA promotion' },
+  kwa: { name: 'KELLIWORKS ACCOUNTING — LinkedIn',                      sub: '1 post/day · All KelliWorks posts for LinkedIn business page ONLY · Mix of trending POV + educational · Playful, funny, relatable · ❌ No tax content' },
+  kwt: { name: 'KELLIWORKS TAXES — Instagram Only',                     sub: '2 posts/day · Posts for Taxes IG page only · Tips, quotes, carousels · ❌ NOT on LinkedIn · ❌ NOT on KW Accounting grid' },
+  ea:  { name: 'ENTREPRENEURS ANONYMOUS — Instagram',                   sub: 'Meeting rhythm · ❌ No meeting promotion until Kelli confirms · General EA community content only' },
+  eal: { name: 'ENTREPRENEURS ANONYMOUS — LinkedIn',                    sub: 'EA content adapted for LinkedIn audience · Professional tone · Community & thought leadership' },
+  kl:  { name: 'KELLI LEWIS PERSONAL — LinkedIn',                       sub: '1 post/day · Personal brand · Author · Speaker · Coach · Accountant · 30 min daily engagement · ❌ No tax content' },
 };
 
 const LS_PREFIX = 'kw-approval-';
@@ -1094,15 +1092,15 @@ let currentRole = 'kelli';
 const METRICOOL_CONFIG = {
   userId:   '4769078',             // Metricool account userId
   timezone: 'America/New_York',    // adjust if needed
-  // KelliWorks brand — connected: Instagram, LinkedIn, Google Business Profile
-  kw:  { blogId: '6199467', networks: ['instagram'] },
-  kwa: { blogId: '6199467', networks: ['instagram', 'linkedin'] },
-  kwt: { blogId: '6199467', networks: ['instagram'] },
-  kl:  { blogId: '6199467', networks: ['linkedin'] },
-  gw:  { blogId: '6199467', networks: ['instagram'] },
-  web: { blogId: '6199467', networks: ['gbp'] },
-  // Entrepreneurs Anonymous brand — connected: Instagram, YouTube, LinkedIn
-  ea:  { blogId: '6184180', networks: ['instagram', 'youtube', 'linkedin'] },
+  // Brand 1: ea_kelliworks (IG, LinkedIn, YouTube) — blogId 6184180
+  kw:  { blogId: '6184180', networks: ['instagram'] },   // KW account IG
+  kl:  { blogId: '6184180', networks: ['linkedin'] },    // Personal LinkedIn
+  // Brand 2: ea_kelliworks (IG only) — blogId 6199465
+  ea:  { blogId: '6199465', networks: ['instagram'] },   // EA Anon IG
+  eal: { blogId: '6199465', networks: ['linkedin'] },    // EA LinkedIn
+  // Brand 3: KelliWorks Accounting Firm (IG, LinkedIn, GBP) — blogId 6199467
+  kwa: { blogId: '6199467', networks: ['linkedin'] },    // KW Accounting LinkedIn
+  kwt: { blogId: '6199467', networks: ['instagram'] },   // KW Taxes IG
 };
 let _weekPosts = [];
 let _platformNotes = {};
