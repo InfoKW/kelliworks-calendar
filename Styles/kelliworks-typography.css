@@ -1,0 +1,338 @@
+/* ============================================================
+   KELLIWORKS TYPOGRAPHY
+   Extracted from kelliworks.com (Wix)
+   Requires: kelliworks-tokens.css imported first.
+   ============================================================
+
+   FONT SOURCES:
+   ┌─────────────────────────────────────────────────────────┐
+   │  Myriad Pro (PRIMARY)    → Adobe Fonts (Typekit)        │
+   │  https://fonts.adobe.com/fonts/myriad                   │
+   │  Add Adobe embed code to your <head> before this CSS.   │
+   │                                                          │
+   │  Questrial               → Google Fonts ✓               │
+   │  Montserrat              → Google Fonts ✓               │
+   │                                                          │
+   │  Note: DIN Next, Proxima Nova, The Philadelphia Story   │
+   │  are also Wix/Adobe fonts. System fallbacks provided.   │
+   └─────────────────────────────────────────────────────────┘
+
+   FONT SCALE (from Wix WST + computed styles):
+   ┌──────────────┬──────────┬────────────┬────────────────┐
+   │  Role        │  Size    │  Family    │  Weight        │
+   ├──────────────┼──────────┼────────────┼────────────────┤
+   │  Hero H1     │  79px    │  Myriad    │  400           │
+   │  Title       │  44px    │  Myriad    │  400           │
+   │  Page Title  │  44px    │  Philly*   │  400           │
+   │  Heading XL  │  22px    │  Myriad    │  400           │
+   │  Heading L   │  19px    │  Proxima   │  400           │
+   │  Subheading  │  17px    │  Questrial │  400           │
+   │  Body L      │  17px    │  Myriad    │  400           │
+   │  Body M      │  15px    │  Myriad    │  400           │
+   │  Body S      │  13px    │  Myriad    │  400           │
+   │  Body XS     │  12px    │  DIN Next  │  400           │
+   │  Menu        │  16px    │  DIN Next  │  400           │
+   │  Button      │  16px    │  Myriad    │  400           │
+   └──────────────┴──────────┴────────────┴────────────────┘
+   * The Philadelphia Story = decorative display font
+
+============================================================ */
+
+
+/* ============================================================
+   BASE
+============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-body-s);    /* 13px — matches site body */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-body);  /* 32px — as measured */
+  color: var(--kw-color-text-muted);        /* #767676 */
+  background-color: var(--kw-color-bg-primary);
+}
+
+
+/* ============================================================
+   HEADINGS
+============================================================ */
+
+/* Hero — Homepage large display heading */
+h1,
+.kw-h1 {
+  font-family: var(--kw-font-primary);       /* Myriad Pro */
+  font-size: var(--kw-font-size-hero);       /* 79px */
+  font-weight: var(--kw-font-weight-normal); /* 400 */
+  line-height: 1.1;
+  letter-spacing: normal;
+  color: var(--kw-color-navy);               /* #122620 */
+  margin-top: 0;
+  margin-bottom: var(--kw-spacing-l);
+}
+
+/* Display / Page Title — The Philadelphia Story decorative font */
+.kw-title-display {
+  font-family: var(--kw-font-display);       /* The Philadelphia Story */
+  font-size: var(--kw-font-size-title);      /* 44px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-base);   /* 1.4em */
+  color: var(--kw-color-navy);
+  margin-top: 0;
+  margin-bottom: var(--kw-spacing-l);
+}
+
+/* Standard Title — Myriad Pro 44px */
+.kw-title {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-title);      /* 44px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-navy);
+  margin-top: 0;
+  margin-bottom: var(--kw-spacing-l);
+}
+
+/* Heading XL — Myriad Pro 22px */
+h2,
+.kw-h2 {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-h2);         /* 22px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-navy);
+  margin-top: 0;
+  margin-bottom: var(--kw-spacing-m);
+}
+
+/* Heading L — Subheading / Questrial (as used in FAQ/content) */
+h3,
+.kw-h3 {
+  font-family: var(--kw-font-secondary);     /* Questrial */
+  font-size: var(--kw-font-size-body-l);     /* 17px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-h3);     /* 21px */
+  color: var(--kw-color-text-primary);       /* #1A1A1A */
+  margin-top: 0;
+  margin-bottom: var(--kw-spacing-s);
+}
+
+/* Heading M — Proxima Nova style */
+h4,
+.kw-h4 {
+  font-family: var(--kw-font-ui);            /* Proxima Nova */
+  font-size: var(--kw-font-size-h3);         /* 19px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-text-primary);
+  margin-top: 0;
+  margin-bottom: var(--kw-spacing-s);
+}
+
+h5,
+.kw-h5 {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-body-l);     /* 17px */
+  font-weight: var(--kw-font-weight-semibold);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-text-primary);
+  margin-top: 0;
+  margin-bottom: var(--kw-spacing-s);
+}
+
+h6,
+.kw-h6 {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-body-m);     /* 15px */
+  font-weight: var(--kw-font-weight-semibold);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-text-primary);
+  margin-top: 0;
+  margin-bottom: var(--kw-spacing-s);
+}
+
+
+/* ============================================================
+   BODY TEXT
+============================================================ */
+
+/* Body Large */
+.kw-body-l {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-body-l);     /* 17px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-text-muted);
+}
+
+/* Body Medium */
+.kw-body-m {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-body-m);     /* 15px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-text-muted);
+}
+
+/* Body Small — Default paragraph */
+p,
+.kw-body-s {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-body-s);     /* 13px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-body);   /* 32px */
+  color: var(--kw-color-text-muted);         /* #767676 */
+  margin-top: 0;
+  margin-bottom: var(--kw-spacing-m);
+}
+
+/* Caption / Body XS */
+.kw-caption,
+.kw-body-xs {
+  font-family: var(--kw-font-menu);          /* DIN Next */
+  font-size: var(--kw-font-size-body-xs);    /* 12px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-text-muted);
+}
+
+/* Label — Form labels, tags */
+.kw-label {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-label);      /* 14px */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-text-primary);
+}
+
+
+/* ============================================================
+   NAVIGATION
+   Note: Nav items are written in ALL CAPS as text content,
+   not via text-transform CSS. Measured font-size on site: 13px.
+============================================================ */
+
+.kw-nav,
+.kw-nav-item {
+  font-family: var(--kw-font-primary);       /* Myriad Pro — as measured */
+  font-size: 13px;                           /* 13px — confirmed via Script C */
+  font-weight: var(--kw-font-weight-normal);
+  line-height: var(--kw-line-height-base);
+  color: var(--kw-color-text-primary);
+  text-decoration: none;
+  letter-spacing: 0.05em;                    /* slight tracking for all-caps readability */
+}
+
+.kw-nav-item:hover {
+  color: var(--kw-color-blue);
+  transition: color var(--kw-transition-fast);
+}
+
+.kw-nav-item.kw-active {
+  color: var(--kw-color-blue);
+}
+
+
+/* ============================================================
+   LINKS
+   Script C confirmed two distinct link color uses:
+   - In-content links (email, phone, rich text): #015989 (dark blue)
+   - CTA / action links: #C3A862 (primary blue)
+============================================================ */
+
+a {
+  color: var(--kw-color-blue-dark);          /* #015989 — confirmed on in-content links */
+  text-decoration: none;
+  transition: var(--kw-transition-colors);
+}
+
+a:hover {
+  color: var(--kw-color-navy);              /* #122620 */
+}
+
+a:focus-visible {
+  outline: 2px solid var(--kw-color-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* CTA / action links — primary blue */
+.kw-link-action {
+  color: var(--kw-color-blue);               /* #C3A862 */
+}
+
+.kw-link-action:hover {
+  color: var(--kw-color-navy);
+}
+
+/* Gold accent links — used in content / FAQ areas */
+.kw-link-accent {
+  color: var(--kw-color-gold);               /* #C3A862 */
+}
+
+.kw-link-accent:hover {
+  color: var(--kw-color-terra);
+}
+
+/* Contact info links (email, phone) */
+.kw-link-contact {
+  color: var(--kw-color-blue-dark);          /* #015989 — confirmed via Script C */
+  font-size: var(--kw-font-size-body-s);     /* 13px */
+}
+
+.kw-link-contact:hover {
+  color: var(--kw-color-navy);
+}
+
+
+/* ============================================================
+   FAQ / ACCORDION TYPOGRAPHY
+   (Questrial — as used in site FAQ widget)
+============================================================ */
+
+.kw-question {
+  font-family: var(--kw-font-secondary);     /* Questrial */
+  font-size: 17px;
+  font-weight: var(--kw-font-weight-normal);
+  line-height: 21px;
+  color: var(--kw-color-text-primary);
+}
+
+.kw-answer {
+  font-family: var(--kw-font-secondary);     /* Questrial */
+  font-size: 15px;
+  font-weight: var(--kw-font-weight-normal);
+  line-height: 18px;
+  color: var(--kw-color-text-primary);
+}
+
+
+/* ============================================================
+   UTILITY TEXT CLASSES
+============================================================ */
+
+.kw-text-navy      { color: var(--kw-color-navy); }
+.kw-text-blue      { color: var(--kw-color-blue); }
+.kw-text-gold      { color: var(--kw-color-gold); }
+.kw-text-muted     { color: var(--kw-color-text-muted); }
+.kw-text-primary   { color: var(--kw-color-text-primary); }
+.kw-text-white     { color: var(--kw-color-white); }
+
+.kw-text-center    { text-align: center; }
+.kw-text-left      { text-align: left; }
+.kw-text-right     { text-align: right; }
+
+.kw-font-primary   { font-family: var(--kw-font-primary); }
+.kw-font-secondary { font-family: var(--kw-font-secondary); }
+.kw-font-display   { font-family: var(--kw-font-display); }

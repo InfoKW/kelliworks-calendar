@@ -1,0 +1,204 @@
+/* ============================================================
+   KELLIWORKS DESIGN TOKENS
+   Extracted from kelliworks.com (Wix)
+   Use this file as the foundation for all Kelliworks projects.
+   Import this first, then typography and buttons on top.
+   ============================================================ */
+
+/*
+  FONT SETUP:
+  - Myriad Pro (primary) → Adobe Fonts: https://fonts.adobe.com/fonts/myriad
+    Add your Adobe Fonts project embed code to your <head>.
+    Fallback stack is provided below for environments without it.
+  - Questrial & Montserrat → Google Fonts (imported below)
+*/
+@import url('https://fonts.googleapis.com/css2?family=Questrial&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+
+  /* ============================================================
+     COLORS — BRAND PALETTE
+  ============================================================ */
+
+  /* Base */
+  --kw-color-white:         #FFFFFF;
+  --kw-color-bg-primary:    #FFFFFF;
+  --kw-color-bg-secondary:  #F0F2F4;  /* rgb(240,242,244) */
+
+  /* Text */
+  --kw-color-text-primary:  #1A1A1A;  /* rgb(26,26,26)   — near black */
+  --kw-color-text-secondary:#484848;  /* rgb(72,72,72)   — dark gray */
+  --kw-color-text-muted:    #767676;  /* rgb(118,118,118) — body text */
+
+  /* Forest — Primary Brand Color (replaces Navy) */
+  --kw-color-navy-lightest: #8FBDB0;  /* rgb(143,189,176) — sage tint */
+  --kw-color-navy-light:    #3B7A63;  /* rgb(59,122,99)  — medium forest */
+  --kw-color-navy-medium:   #1E4A38;  /* rgb(30,74,56)   — mid forest */
+  --kw-color-navy:          #122620;  /* rgb(18,38,32)   ← PRIMARY BRAND COLOR */
+  --kw-color-navy-dark:     #0A1A15;  /* rgb(10,26,21)   — deep forest */
+
+  /* Gold — Primary Action Color */
+  --kw-color-blue-lightest: #FBF8F9;  /* warm near-white — light action bg */
+  --kw-color-blue-light:    #D4BA7A;  /* rgb(212,186,122) — light gold */
+  --kw-color-blue:          #C3A862;  /* rgb(195,168,98)  ← PRIMARY ACTION / CTA */
+  --kw-color-blue-dark:     #A88640;  /* rgb(168,134,64)  — dark gold hover */
+  --kw-color-blue-darkest:  #7A6030;  /* rgb(122,96,48)   — deep gold */
+
+  /* Terracotta — Secondary Palette */
+  --kw-color-terra-lightest:#E9CFC4;  /* rgb(233,207,196) */
+  --kw-color-terra-light:   #D2AFA0;  /* rgb(210,175,160) */
+  --kw-color-terra:         #BC7D62;  /* rgb(188,125,98) */
+  --kw-color-terra-dark:    #7D5341;  /* rgb(125,83,65) */
+  --kw-color-terra-darkest: #3F2A21;  /* rgb(63,42,33) */
+
+  /* Sage/Green — Secondary Palette */
+  --kw-color-green-lightest:#FAFAFA;  /* near-white — light success bg */
+  --kw-color-green-light:   #C8DDD7;  /* rgb(200,221,215) — light sage */
+  --kw-color-green:         #1A4A36;  /* rgb(26,74,54)    — dark forest green */
+  --kw-color-green-dark:    #1A4A36;  /* rgb(26,74,54) */
+  --kw-color-green-darkest: #0D2720;  /* rgb(13,39,32) */
+
+  /* Gold — Accent */
+  --kw-color-gold:          #C3A862;  /* rgb(195,168,98) ← BRAND GOLD */
+
+  /* Feedback */
+  --kw-color-error:         #DF3131;  /* rgb(223,49,49) */
+
+  /* Additional Surface Colors — confirmed via rendered page scan */
+  --kw-color-surface-warm:  #FBF8F9;  /* rgb(251,248,249) — warm near-white, card/section bg */
+  --kw-color-bg-cream:      #FFF7ED;  /* rgb(255,247,237) — brand warm cream, page background */
+  --kw-color-cream:         #FFFDF2;  /* rgb(255,253,242) — warm cream, form text on dark */
+  --kw-color-peach:         #FFF7ED;  /* rgb(255,247,237) — warm off-white/peach accent */
+  --kw-color-pale-yellow:   #FFFCCC;  /* rgb(255,252,204) — pale yellow highlight */
+
+  /* Additional Gray Borders */
+  --kw-color-border-light:  #DEDEDE;  /* rgb(222,222,222) — light gray border */
+  --kw-color-border-mid:    #E3E3E3;  /* rgb(227,227,227) — mid gray border */
+  --kw-color-gray-dark:     #323232;  /* rgb(50,50,50)   — dark gray text variant */
+
+  /* Slate Blue — mid-tone between navy-medium and navy */
+  --kw-color-slate:         #324158;  /* rgb(50,65,88)   — slate blue, carousel/UI elements */
+
+  /* Soft Teal — accent element */
+  --kw-color-teal:          #82B5BF;  /* rgb(130,181,191) — soft teal accent */
+
+  /* Gold Variant — navigation arrows & carousel dots */
+  --kw-color-gold-bright:   #C3A862;  /* rgb(195,168,98) — brand gold (unified) */
+
+  /* Dark Form Colors — used in styled dark contact form widget */
+  --kw-color-form-bg:       #122620;  /* rgb(18,38,32)   — brand forest, form/dark bg */
+  --kw-color-form-border:   #0A1A15;  /* rgb(10,26,21)   — deep forest, input border */
+  --kw-color-form-text:     #FFFDF2;  /* rgb(255,253,242) — cream text on dark form inputs */
+
+
+  /* ============================================================
+     TYPOGRAPHY
+  ============================================================ */
+
+  /* Font Families */
+  --kw-font-primary:        'myriad-pro', 'Myriad Pro', 'Liberation Sans', Arial, sans-serif;
+  --kw-font-display:        'The Philadelphia Story', Georgia, serif;
+  --kw-font-heading:        'Marcellus', Georgia, serif;  /* Training site header font */
+  --kw-font-secondary:      'Questrial', sans-serif;
+  --kw-font-body-alt:       'Montserrat', sans-serif;
+  --kw-font-menu:           'din-next-w01-light', 'DIN Next', Barlow, 'Jost', sans-serif;
+  --kw-font-ui:             'proxima-n-w01-reg', 'Proxima Nova', 'Nunito Sans', sans-serif;
+
+  /* Font Sizes */
+  --kw-font-size-hero:      79px;   /* h1 hero — homepage large heading */
+  --kw-font-size-title:     44px;   /* Wix Title / display */
+  --kw-font-size-h2:        22px;   /* Heading XL */
+  --kw-font-size-h3:        19px;   /* Heading L */
+  --kw-font-size-body-l:    17px;   /* Body L — large body / subheadings */
+  --kw-font-size-body-m:    15px;   /* Body M */
+  --kw-font-size-body-s:    13px;   /* Body S — default paragraph */
+  --kw-font-size-body-xs:   12px;   /* Body XS / caption */
+  --kw-font-size-menu:      16px;   /* Navigation */
+  --kw-font-size-button:    16px;   /* Buttons */
+  --kw-font-size-label:     14px;   /* Form labels */
+
+  /* Font Weights */
+  --kw-font-weight-normal:  400;
+  --kw-font-weight-medium:  500;
+  --kw-font-weight-semibold:600;
+  --kw-font-weight-bold:    700;
+
+  /* Line Heights */
+  --kw-line-height-tight:   1.1;
+  --kw-line-height-base:    1.4em;
+  --kw-line-height-body:    32px;   /* body paragraph — as measured on site */
+  --kw-line-height-h3:      21px;   /* h3 line height as measured */
+
+
+  /* ============================================================
+     SPACING & LAYOUT
+  ============================================================ */
+
+  --kw-site-width:    980px;  /* max content width */
+  --kw-spacing-xs:    4px;
+  --kw-spacing-s:     8px;
+  --kw-spacing-m:     16px;
+  --kw-spacing-l:     24px;
+  --kw-spacing-xl:    32px;
+  --kw-spacing-xxl:   48px;
+
+
+  /* ============================================================
+     BORDERS & RADIUS
+  ============================================================ */
+
+  --kw-border-width:          1px;
+  --kw-border-radius-none:    0px;    /* sharp corners */
+  --kw-border-radius-s:       8px;    /* gallery items / thumbnails */
+  --kw-border-radius-m:       12px;   /* cards / containers (training site) */
+  --kw-border-radius-pill:    99px;   /* buttons — pill shape (training site) */
+  --kw-border-radius-full:    50%;    /* avatars / profile images */
+  --kw-border-color:          rgba(26, 26, 26, 0.2);
+
+
+  /* ============================================================
+     SHADOWS
+  ============================================================ */
+
+  --kw-shadow-card: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);
+
+
+  /* ============================================================
+     TRANSITIONS & ANIMATION
+  ============================================================ */
+
+  --kw-transition-fast:    0.4s ease;
+  --kw-transition-medium:  0.5s ease;
+  --kw-transition-colors:  color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease;
+  --kw-transition-opacity: opacity 0.4s ease;
+  --kw-transition-all:     opacity 0.5s ease, border 0.5s ease, color 0.5s ease;
+
+
+  /* ============================================================
+     BUTTON TOKENS
+     Source: Wix WST token system (--wst-button-color-*)
+  ============================================================ */
+
+  /* Primary — Gold fill, white text. Hover → forest bg + gold border */
+  --kw-btn-primary-bg:              #C3A862;
+  --kw-btn-primary-border:          #C3A862;
+  --kw-btn-primary-text:            #FFFFFF;
+  --kw-btn-primary-bg-hover:        #122620;
+  --kw-btn-primary-border-hover:    #C3A862;
+  --kw-btn-primary-text-hover:      #FFFFFF;
+  --kw-btn-primary-bg-disabled:     #767676;
+  --kw-btn-primary-border-disabled: #767676;
+  --kw-btn-primary-text-disabled:   #FFFFFF;
+
+  /* Secondary — Forest fill + gold border, white text. Hover → gold fill */
+  --kw-btn-secondary-bg:            #122620;
+  --kw-btn-secondary-border:        #C3A862;
+  --kw-btn-secondary-text:          #FFFFFF;
+  --kw-btn-secondary-bg-hover:      #C3A862;
+  --kw-btn-secondary-border-hover:  #C3A862;
+  --kw-btn-secondary-text-hover:    #FFFFFF;
+  --kw-btn-secondary-bg-disabled:   #122620;
+  --kw-btn-secondary-border-disabled:#767676;
+  --kw-btn-secondary-text-disabled: #767676;
+
+}

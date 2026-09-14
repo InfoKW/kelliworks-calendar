@@ -1,0 +1,447 @@
+/* ============================================================
+   KELLIWORKS BUTTONS & INTERACTIONS
+   Extracted from kelliworks.com (Wix WST token system)
+   Requires: kelliworks-tokens.css imported first.
+   ============================================================
+
+   BUTTON SYSTEM OVERVIEW:
+   ┌──────────────┬──────────────────────────────────────────────────┐
+   │  Variant     │  Behavior                                        │
+   ├──────────────┼──────────────────────────────────────────────────┤
+   │  Primary     │  Gold fill → hover: forest bg + gold border      │
+   │  Secondary   │  Forest bg + gold border → hover: gold fill      │
+   │  Ghost       │  Transparent + gold border → hover: gold fill    │
+   │  Navy        │  Forest fill → hover: outline + gold border      │
+   │  Gold        │  Gold fill → hover: forest bg + gold border      │
+   └──────────────┴──────────────────────────────────────────────────┘
+
+   KEY INTERACTION NOTES:
+   - Buttons are PILL-SHAPED (border-radius: 99px)
+   - Text is UPPERCASE with letter-spacing: 0.08em
+   - Font size: 12px, weight: 700
+   - Transition: color, background, border at 0.2s
+   - Brand colors: Forest #122620, Gold #C3A862
+
+============================================================ */
+
+
+/* ============================================================
+   BASE BUTTON RESET & SHARED STYLES
+============================================================ */
+
+.kw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kw-spacing-s);
+
+  /* Typography */
+  font-family: var(--kw-font-primary);       /* Myriad Pro */
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4em;
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  /* Layout */
+  padding: 10px 24px;
+
+  /* Border */
+  border-style: solid;
+  border-width: 1.5px;
+  border-radius: var(--kw-border-radius-pill); /* 99px — pill shape */
+
+  /* Interaction */
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+  /* Reset browser defaults */
+  appearance: none;
+  -webkit-appearance: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.kw-btn:focus-visible {
+  outline: 2px solid var(--kw-color-blue);
+  outline-offset: 2px;
+}
+
+.kw-btn:disabled,
+.kw-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   PRIMARY BUTTON
+   Default:  Gold bg (#C3A862) + White text
+   Hover:    Forest bg (#122620) + Gold border + White text
+   Active:   Dark gold (#A88640)
+   Disabled: Gray bg (#767676) + White text
+============================================================ */
+
+.kw-btn-primary {
+  background-color: var(--kw-btn-primary-bg);       /* #C3A862 */
+  border-color:     var(--kw-btn-primary-border);   /* #C3A862 */
+  color:            var(--kw-btn-primary-text);     /* #FFFFFF */
+}
+
+.kw-btn-primary:hover {
+  background-color: var(--kw-btn-primary-bg-hover);     /* #122620 */
+  border-color:     var(--kw-btn-primary-border-hover); /* #C3A862 */
+  color:            var(--kw-btn-primary-text-hover);   /* #FFFFFF */
+}
+
+.kw-btn-primary:focus-visible {
+  background-color: var(--kw-btn-primary-bg-hover);
+  border-color:     var(--kw-btn-primary-border-hover);
+  color:            var(--kw-btn-primary-text-hover);
+  outline:          2px solid var(--kw-color-gold);
+  outline-offset:   2px;
+}
+
+.kw-btn-primary:active {
+  background-color: var(--kw-color-blue-dark);     /* #A88640 */
+  border-color:     var(--kw-color-blue-dark);
+  color:            #FFFFFF;
+  transition-duration: 0.1s;
+}
+
+.kw-btn-primary:disabled,
+.kw-btn-primary[aria-disabled="true"] {
+  background-color: var(--kw-btn-primary-bg-disabled);     /* #767676 */
+  border-color:     var(--kw-btn-primary-border-disabled); /* #767676 */
+  color:            var(--kw-btn-primary-text-disabled);   /* #FFFFFF */
+  opacity: 1; /* Wix keeps full opacity, uses gray instead */
+}
+
+
+/* ============================================================
+   SECONDARY BUTTON (Outline style)
+   Default:  Forest bg (#122620) + Gold border + White text
+   Hover:    Gold fill (#C3A862) + Gold border + White text
+   Active:   Dark gold (#A88640)
+============================================================ */
+
+.kw-btn-secondary {
+  background-color: var(--kw-btn-secondary-bg);     /* #122620 */
+  border-color:     var(--kw-btn-secondary-border); /* #C3A862 */
+  color:            var(--kw-btn-secondary-text);   /* #FFFFFF */
+}
+
+.kw-btn-secondary:hover {
+  background-color: var(--kw-btn-secondary-bg-hover);     /* #C3A862 */
+  border-color:     var(--kw-btn-secondary-border-hover); /* #C3A862 */
+  color:            var(--kw-btn-secondary-text-hover);   /* #FFFFFF */
+}
+
+.kw-btn-secondary:focus-visible {
+  background-color: var(--kw-btn-secondary-bg-hover);
+  border-color:     var(--kw-btn-secondary-border-hover);
+  color:            var(--kw-btn-secondary-text-hover);
+  outline:          2px solid var(--kw-color-gold);
+  outline-offset:   2px;
+}
+
+.kw-btn-secondary:active {
+  background-color: var(--kw-color-blue-dark);
+  border-color:     var(--kw-color-blue-dark);
+  color:            #FFFFFF;
+  transition-duration: 0.1s;
+}
+
+.kw-btn-secondary:disabled,
+.kw-btn-secondary[aria-disabled="true"] {
+  background-color: var(--kw-btn-secondary-bg-disabled);     /* #FFFFFF */
+  border-color:     var(--kw-btn-secondary-border-disabled); /* #767676 */
+  color:            var(--kw-btn-secondary-text-disabled);   /* #767676 */
+}
+
+
+/* ============================================================
+   GHOST / TEXT BUTTON
+   Default:  Transparent + Blue text, no border
+   Hover:    Underline, shifts to navy
+   For inline actions and subtle CTAs
+============================================================ */
+
+.kw-btn-ghost {
+  background-color: var(--kw-color-navy);  /* #122620 */
+  border-color:     var(--kw-color-gold);  /* #C3A862 */
+  color:            #FFFFFF;
+}
+
+.kw-btn-ghost:hover {
+  background-color: var(--kw-color-gold);
+  border-color:     var(--kw-color-gold);
+  color:            #FFFFFF;
+}
+
+.kw-btn-ghost:focus-visible {
+  outline:         2px solid var(--kw-color-gold);
+  outline-offset:  2px;
+}
+
+.kw-btn-ghost:active {
+  background-color: var(--kw-color-blue-dark);
+}
+
+
+/* ============================================================
+   NAVY BUTTON
+   Default:  Navy fill (#10284D) + White text
+   Hover:    Transparent bg + Navy text + Navy border
+   For dark sections / hero CTAs on navy backgrounds
+============================================================ */
+
+.kw-btn-navy {
+  background-color: var(--kw-color-navy);   /* #122620 */
+  border-color:     var(--kw-color-navy);
+  color:            #FFFFFF;
+}
+
+.kw-btn-navy:hover {
+  background-color: transparent;
+  border-color:     var(--kw-color-navy);
+  color:            var(--kw-color-navy);
+}
+
+.kw-btn-navy:focus-visible {
+  background-color: transparent;
+  border-color:     var(--kw-color-navy);
+  color:            var(--kw-color-navy);
+  outline:          2px solid var(--kw-color-navy);
+  outline-offset:   2px;
+}
+
+.kw-btn-navy:active {
+  background-color: var(--kw-color-navy-dark);
+  border-color:     var(--kw-color-navy-dark);
+  color:            #FFFFFF;
+}
+
+
+/* ============================================================
+   GOLD ACCENT BUTTON
+   Default:  Gold fill (#BCA162) + White text
+   Hover:    Transparent bg + Gold text + Gold border
+   For accent CTAs on light backgrounds
+============================================================ */
+
+.kw-btn-gold {
+  background-color: var(--kw-color-gold);   /* #C3A862 */
+  border-color:     var(--kw-color-gold);
+  color:            #FFFFFF;
+}
+
+.kw-btn-gold:hover {
+  background-color: transparent;
+  border-color:     var(--kw-color-gold);
+  color:            var(--kw-color-gold);
+}
+
+.kw-btn-gold:active {
+  background-color: var(--kw-color-terra);
+  border-color:     var(--kw-color-terra);
+  color:            #FFFFFF;
+}
+
+
+/* ============================================================
+   BUTTON SIZES
+============================================================ */
+
+/* Small */
+.kw-btn-sm {
+  font-size: var(--kw-font-size-body-m);    /* 15px */
+  padding: 8px 20px;
+}
+
+/* Default is already set on .kw-btn (16px, 12px 28px) */
+
+/* Large */
+.kw-btn-lg {
+  font-size: 18px;
+  padding: 16px 40px;
+}
+
+/* Full width */
+.kw-btn-block {
+  display: flex;
+  width: 100%;
+}
+
+
+/* ============================================================
+   BUTTON WITH ICON
+============================================================ */
+
+.kw-btn .kw-btn-icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.kw-btn .kw-btn-icon-right {
+  order: 1;
+}
+
+
+/* ============================================================
+   INTERACTIVE STATES — FORM INPUTS
+   (sourced from Wix --trns, --trans1 tokens)
+============================================================ */
+
+/* Input base interaction */
+input,
+textarea,
+select {
+  font-family: var(--kw-font-primary);
+  font-size: var(--kw-font-size-label);      /* 14px */
+  color: var(--kw-color-text-primary);
+  border: var(--kw-border-width) solid rgba(26, 26, 26, 0.3);
+  background-color: transparent;
+  padding: 10px var(--kw-spacing-l);
+  height: 47px;                               /* --inputHeight: 47px */
+  transition: border-color var(--kw-transition-fast), background-color var(--kw-transition-fast);
+  outline: none;
+  width: 100%;
+}
+
+input:hover,
+textarea:hover {
+  border-color: rgba(26, 26, 26, 0.6);
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--kw-color-blue);        /* #0285CE */
+  background-color: rgba(255, 255, 255, 0);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--kw-color-text-secondary);     /* #484848 */
+  opacity: 0.6;
+}
+
+input.kw-error,
+textarea.kw-error {
+  border-color: var(--kw-color-error);       /* #DF3131 */
+}
+
+.kw-error-message {
+  color: var(--kw-color-error);
+  font-size: var(--kw-font-size-body-xs);    /* 12px */
+  margin-top: var(--kw-spacing-xs);
+}
+
+
+/* ============================================================
+   HOVER EFFECTS — GALLERY / CARDS
+   (sourced from gallery variables on site)
+============================================================ */
+
+/* Image hover overlay */
+.kw-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--kw-border-radius-s);  /* 8px */
+  transition: transform var(--kw-transition-fast),
+              box-shadow var(--kw-transition-fast);
+}
+
+.kw-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--kw-shadow-card);
+}
+
+.kw-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(72, 72, 72, 0) 0%,
+    rgba(0, 0, 0, 0.47) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--kw-transition-fast);
+}
+
+.kw-card:hover .kw-card-overlay {
+  opacity: 1;
+}
+
+
+/* ============================================================
+   DARK FORM WIDGET
+   The site uses a dark-themed contact form with forest teal
+   inputs. Colors confirmed via Script D rendered scan.
+   bg: #12261F, border: #0A2323, text: #FFFDF2 (cream)
+============================================================ */
+
+.kw-form-dark {
+  background-color: var(--kw-color-form-bg);    /* #12261F dark forest teal */
+  padding: var(--kw-spacing-xl);
+}
+
+.kw-form-dark input,
+.kw-form-dark textarea,
+.kw-form-dark select {
+  background-color: transparent;
+  border-color: var(--kw-color-form-border);    /* #0A2323 */
+  color: var(--kw-color-form-text);             /* #FFFDF2 cream */
+  height: 47px;
+}
+
+.kw-form-dark input::placeholder,
+.kw-form-dark textarea::placeholder {
+  color: var(--kw-color-form-text);
+  opacity: 0.5;
+}
+
+.kw-form-dark input:hover,
+.kw-form-dark textarea:hover {
+  border-color: rgba(255, 253, 242, 0.4);
+}
+
+.kw-form-dark input:focus,
+.kw-form-dark textarea:focus {
+  border-color: var(--kw-color-gold);           /* #BCA162 gold focus ring */
+  background-color: rgba(255, 253, 242, 0.03);
+}
+
+.kw-form-dark label,
+.kw-form-dark .kw-label {
+  color: var(--kw-color-cream);                 /* #FFFDF2 */
+}
+
+
+/* ============================================================
+   TRANSITIONS REFERENCE
+   These match the --trns variables extracted from the site.
+============================================================ */
+
+/* Standard transition (used across most interactive elements) */
+.kw-transition {
+  transition: opacity 0.5s ease,
+              border 0.5s ease,
+              color 0.5s ease;
+}
+
+/* Color transition only */
+.kw-transition-colors {
+  transition: color 0.4s ease,
+              background-color 0.4s ease,
+              border-color 0.4s ease;
+}
+
+/* Opacity fade (used for section transitions on site) */
+.kw-transition-opacity {
+  transition: opacity 0.4s ease;
+}
