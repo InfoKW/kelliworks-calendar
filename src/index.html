@@ -1873,6 +1873,7 @@ async function onModalFileChange(input) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'kw-calendar');
+    formData.append('access_mode', 'public');
     const res = await fetch('https://api.cloudinary.com/v1_1/dx51n94k1/upload', { method: 'POST', body: formData });
     if (!res.ok) throw new Error('Upload failed: ' + res.status);
     const data = await res.json();
@@ -1940,6 +1941,7 @@ async function onCarouselFilesChange(input) {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', 'kw-calendar');
+      formData.append('access_mode', 'public');
       const res = await fetch('https://api.cloudinary.com/v1_1/dx51n94k1/upload', { method: 'POST', body: formData });
       if (!res.ok) throw new Error('Upload failed: ' + res.status);
       const data = await res.json();
